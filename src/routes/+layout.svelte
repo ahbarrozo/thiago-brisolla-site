@@ -1,6 +1,14 @@
 <script lang="ts">
 	import '../app.css';
+    import Toolbar from '../components/Toolbar.svelte';
 	let { children } = $props();
 </script>
 
-{@render children()}
+<div class="app h-full">
+    <div class="theme-skeleton h-full">
+        <Toolbar />
+        <main class="flex-1 px-64 py-12">
+            {@render children()}
+        </main>
+    </div>
+</div>
