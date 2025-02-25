@@ -7,7 +7,7 @@
 <div class="app h-full">
     <div class="theme-skeleton h-full">
         <Toolbar />
-        <main class="flex-1 px-64 py-12">
+        <main class="flex-1 px-64">
             {@render children()}
         </main>
     </div>
