@@ -15,18 +15,54 @@
 
 <div class="navbar font-bold text-secondary text-xl">
     <div class="navbar-start">
+        <div class="dropdown">
+            <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
+            </div>
+            <ul class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                <li>
+                    <button on:click={() => scrollToSection("diario")} 
+                            class="anchor font-questrial tracking-widest">
+                        DIÁRIO
+                    </button>
+                </li>
+                <li>
+                    <button on:click={() => scrollToSection("bio")} 
+                            class="anchor font-questrial tracking-widest">
+                        SOBRE
+                    </button>
+                </li>
+                <li>
+                    <button on:click={() => scrollToSection("obra")}
+                            class="anchor font-questrial tracking-widest">
+                        OBRA
+                    </button>
+                </li>
+                <li>
+                    <button on:click={() => scrollToSection("agenda")}
+                            class="anchor font-questrial tracking-widest">
+                        AGENDA
+                    </button>
+                </li>
+                <li>
+                    <button on:click={() => scrollToSection("contato")}
+                            class="anchor font-questrial tracking-widest">
+                        CONTATO
+                    </button>
+                </li>
+            </ul>
+        </div>
         <a href="/" class="flex items-center gap-12">
-            <span class="text-4xl font-bold text-primary hover:text-blue-700">Thiago Brisolla</span>
+            <span class="text-4xl font-bold text-primary">Thiago Brisolla</span>
         </a>
     </div>        
 
-    <div class="navbar-center sm:hidden lg:flex lg:justify-center lg:gap-12">
-        <a href="/" class="anchor font-questrial tracking-widest transition-colors">HOME</a>
-        <button on:click={() => scrollToSection("diario")} class="anchor font-questrial tracking-widest transition-colors">DIÁRIO</button>
-        <button on:click={() => scrollToSection("bio")} class="anchor cursor-pointer font-questrial tracking-widest transition-colors">SOBRE</button>
-        <button on:click={() => scrollToSection("obra")} class="anchor font-questrial tracking-widest transition-colors">OBRA</button>
-        <button on:click={() => scrollToSection("agenda")} class="anchor font-questrial tracking-widest transition-colors">AGENDA</button>
-        <button on:click={() => scrollToSection("contato")} class="anchor font-questrial tracking-widest transition-colors">CONTATO</button>
+    <div class="navbar-center hidden lg:flex lg:justify-center lg:gap-12">
+        <button on:click={() => scrollToSection("diario")} class="anchor font-questrial tracking-widest">DIÁRIO</button>
+        <button on:click={() => scrollToSection("bio")} class="anchor font-questrial tracking-widest">SOBRE</button>
+        <button on:click={() => scrollToSection("obra")} class="anchor font-questrial tracking-widest">OBRA</button>
+        <button on:click={() => scrollToSection("agenda")} class="anchor font-questrial tracking-widest">AGENDA</button>
+        <button on:click={() => scrollToSection("contato")} class="anchor font-questrial tracking-widest">CONTATO</button>
     </div>
 
     <div class="navbar-end">
