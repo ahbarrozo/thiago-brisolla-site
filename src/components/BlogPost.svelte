@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { type BlogPostProps } from './BlogPost.types';
+    import { type BlogPostProps } from '../types/BlogPost.types';
 
     const { date, images, subtitle, text, title }: BlogPostProps = $props();
     let modal: HTMLDialogElement;    

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import BlogPost from './BlogPost.svelte';
-    import { type BlogPostProps } from './BlogPost.types';
+    import { type BlogPostProps } from '../types/BlogPost.types';
 
     interface BlogProps {
         blogPosts: BlogPostProps[];
