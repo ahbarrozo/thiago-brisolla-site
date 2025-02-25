@@ -11,4 +11,5 @@ export interface BlogPostProps {
   subtitle?: string;
   text: string;
   images?: BlogPostImage[];
+  isFirst?: boolean;
 }

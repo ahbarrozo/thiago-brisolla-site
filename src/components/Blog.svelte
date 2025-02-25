@@ -6,21 +6,25 @@
         blogPosts: BlogPostProps[];
     }
 
-    const POSTS_PER_PAGE = 9;
+    const POSTS_PER_PAGE = 6;
 
     const { blogPosts }: BlogProps = $props();
-    blogPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    blogPosts[0].isFirst = true;
+    const newestPost = blogPosts[0];
 
     let currentPage = $state(1);
-    let firstPost = $derived((currentPage - 1) * POSTS_PER_PAGE);
+    let firstPost = $derived((currentPage - 1) * POSTS_PER_PAGE + 1);
     let displayedPosts = $derived(blogPosts.slice(firstPost, firstPost + POSTS_PER_PAGE));
     const numPages = Math.ceil(blogPosts.length / POSTS_PER_PAGE);
     const pages = Array.from({ length: numPages }, (_, i) => i + 1);
 
 </script>
 <div class="flex flex-wrap gap-x-8 gap-y-4 mb-10">
-    {#each displayedPosts as post }
-        <BlogPost {...post}></BlogPost> 
+    <BlogPost {...newestPost}></BlogPost> 
+    {#each displayedPosts as post}
+        {#if !post.isFirst}
+            <BlogPost {...post}></BlogPost> 
+        {/if}
     {/each}
 </div>
 <div class="join">
