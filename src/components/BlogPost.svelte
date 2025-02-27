@@ -30,7 +30,7 @@
         return text.slice(0, limit) + '...';
     }
 </script>
-<div class={`flex-none ${isFirst ? "w-full" : "w-md"}`}>
+<div class={`flex-none ${isFirst ? "w-full" : "w-96 2xl:w-md"}`}>
 
     {#if !isFirst}
         <div class="card shadow-sm">
@@ -42,39 +42,38 @@
                 {/if} 
             </figure>
             <div class="card-body">
- 	    	    <h2 class="card-title text-xl">{@html title}</h2>
-		    	<span class="text-primary">{subtitle}</span>
-                <p class="mb-4">
+ 	    	    <h2 class="card-title text-3xl">{@html title}</h2>
+		    	<span class="text-primary text-xl">{subtitle}</span>
+                <p class="mb-4 text-lg">
                     {@html truncatedHTML()}
                 </p>
                 <div class="card-actions justify-between">
-                    <button class="btn" onclick={showModal}>Ler mais</button>
+                    <button class="btn btn-primary" onclick={showModal}>Ler mais</button>
                     <span class="mt-4 text-sm text-primary">{dateString}</span>
                 </div>
             </div>
         </div>
     {:else}
-
         <div class="hero">
             <div class="hero-content max-w-fit flex-col lg:flex-row">
                 {#if images && images.length > 0}
                     <img src={images[0].path} 
                          alt="Foto da postage"
                          class="object-cover object-top 
-                                h-80 w-5/10 overflow-hidden
+                                h-96 w-5/10 overflow-hidden
                                 mr-10 rounded-lg" />
                 {/if}
             
-                <div class="relative h-80 lg:w-5xl sm:w-xl">
+                <div class="relative h-120 sm:h-96 w-96 sm:w-xl lg:w-2xl xl:w-3xl 2xl:w-5xl">
                     <div class="absolute top-0">
- 	    	            <h1 class="text-4xl">{@html title}</h1>
-		    	        <span class="text-primary text-xl">{subtitle}</span>
-                        <div class="py-4">
+ 	    	            <h1 class="text-5xl">{@html title}</h1>
+		    	        <span class="text-primary text-2xl">{subtitle}</span>
+                        <div class="py-4 text-xl">
                             {@html truncatedHTML(500)}
                         </div>
                     </div>
                     <div class="absolute bottom-0 card-actions w-full justify-between">
-                        <button class="btn" onclick={showModal}>Ler mais</button>
+                        <button class="btn btn-primary" onclick={showModal}>Ler mais</button>
                         <span class="mt-4 text-sm text-primary">{dateString}</span>
                     </div>
                 </div>

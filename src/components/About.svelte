@@ -7,7 +7,7 @@
 
     const { aboutSections }: AboutProps = $props();
 </script>
-<div class="gap-x-8 gap-y-4 mb-10 text-justify">
+<div class="gap-x-8 gap-y-4 mb-10 text-justify text-lg">
     {#each aboutSections as section, i }
         {#if section.image}
             <img src={section.image} 

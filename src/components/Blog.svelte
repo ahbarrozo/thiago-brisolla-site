@@ -19,7 +19,7 @@
     const pages = Array.from({ length: numPages }, (_, i) => i + 1);
 
 </script>
-<div class="flex flex-wrap gap-x-8 gap-y-4 mb-10">
+<div class="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-10">
     <BlogPost {...newestPost}></BlogPost> 
     {#each displayedPosts as post}
         {#if !post.isFirst}

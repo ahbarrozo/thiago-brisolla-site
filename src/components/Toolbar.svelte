@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { InstagramBrands } from 'svelte-awesome-icons';
-  
+    import { LockSolid } from 'svelte-awesome-icons';
+
     function scrollToSection(sectionId: string) {
         const element = document.getElementById(sectionId);
 
@@ -13,7 +13,7 @@
     }
 </script>
 
-<div class="navbar font-bold text-secondary text-xl">
+<div class="navbar font-bold sticky top-0 z-10 text-secondary bg-base-300 text-xl">
     <div class="navbar-start">
         <div class="dropdown">
             <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
@@ -53,7 +53,7 @@
             </ul>
         </div>
         <a href="/" class="flex items-center gap-12">
-            <span class="text-4xl font-bold text-primary">Thiago Brisolla</span>
+            <span class="text-4xl font-bold text-primary">TB</span>
         </a>
     </div>        
 
@@ -67,9 +67,10 @@
 
     <div class="navbar-end">
         <div class="flex items-center gap-4">
-            <button type="button" class="btn-icon variant-filled">
-                <InstagramBrands />
-            </button>
+            <a class="btn-icon variant-filled"
+               href="/admin">
+                <LockSolid size="14" />
+            </a>
         </div>
     </div>
 </div>

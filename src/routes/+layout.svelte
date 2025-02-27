@@ -7,8 +7,13 @@
 <div class="app h-full">
     <div class="theme-skeleton h-full">
         <Toolbar />
-        <main class="flex-1 px-4 md:px-12 lg:px-64">
-            {@render children()}
-        </main>
+        {@render children()}
+        <footer class="footer flex
+                       justify-center 
+                       sm:footer-horizontal
+                       text-neutral-content
+                       p-10 bg-base-300">
+            © Copyright Thiago Brisolla - Todos os direitos reservados
+        </footer>
     </div>
 </div>
