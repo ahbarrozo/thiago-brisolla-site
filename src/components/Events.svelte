@@ -1,34 +1,50 @@
 <script lang="ts">
-	import type { Album } from "../types/Album.types";
+	import type { Event } from "../types/Event.types";
 
-    interface DiscographyProps {
-        albums: Album[];
+    interface EventsProps {
+        events: Event[];
     }
 
-    const { albums }: DiscographyProps = $props();
+    const { events }: EventsProps = $props();
+    const listEvents = events.reduce((acc, event) => {
+        event.dates.forEach(date => {
+            const dateFormat = new Intl.DateTimeFormat('pt-BR', 
+                { day: '2-digit', month: 'long', year: 'numeric' });
+            const dateString = dateFormat.format(new Date(date));
+            const day = dateString.slice(0, 2);
+            const month = dateString.slice(6, 9).toUpperCase();
+            acc.push({
+                day,
+                month,
+                year: date.slice(0, 4),
+                location: event.location,
+                name: event.name,
+                link: event.link
+            });
+        });
+        return acc;
+    }, [] as Array<{ day: string; month: string; year: string; name: string; location: string; link?: string }>);
+    
+    function openLink(link: string | undefined) {
+        window.open(link, '_blank');
+    }
+
 </script>
-<div class="flex flex-wrap gap-x-8 gap-y-4 mb-10">
-    {#each albums as album}
-        <div class="hero bg-base-200 rounded-2xl mb-10 w-7/15">
-            <div class="hero-content flex-col lg:flex-row">
-                {#if album.image}
-                    <img src={album.image}
-                         alt={"Capa do disco " + album.title}
-                         class="object-cover object-top 
-                                overflow-hidden h-80 w-80 
-                                rounded-lg shadow-2xl mr-10" />
-                {/if}
-                <div class="relative h-80 w-80">
-                    <div class="absolute top-0">
-                        <h1 class="text-3xl font-bold">{album.title}</h1>
-                        <span class="text-sm">{album.date.slice(0,4)}</span>
-                        <div class="py-6">
-                            {@html album.description}
-                        </div>
-                    </div>
-                    <button class="absolute btn btn-primary bottom-0 right-0 m-4">Escutar</button>
-                </div>
+<ul class="list bg-base-100 rounded-box shadow-md"> 
+    {#each listEvents as event}    
+        <li class="list-row">
+            <div>
+                <div class="text-4xl font-thin opacity-30 tabular-nums">{event.day}</div>
+                <div class="text-xl font-thin opacity-30 tabular-nums">{event.month}</div>
             </div>
-        </div>
-    {/each}
-</div>
+            <div class="list-col-grow ml-4 pt-2">
+                <div class="text-xl">{event.name}</div>
+                <div class="uppercase font-semibold opacity-60">{event.location}</div>
+            </div>
+
+            {#if event.link}
+                <button class="btn btn-primary mt-4 mr-4" onclick={() => openLink(event.link)}>Ingressos</button>
+            {/if}
+        </li>
+    {/each} 
+</ul>
