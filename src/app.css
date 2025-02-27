@@ -4,10 +4,11 @@
     name: "dracula";
     default: true;
     --color-base-100: #282e52;
-    --color-base-200: #080e32;
+    --color-base-200: #282e52;
+    --color-base-300: #131832;
     --color-primary: #be9b47;
     --color-secondary: #be9b47;
-    --color-secondary-highlight: #ceab57;
+    --color-secondary-highlight: #eecb77;
     --background: #181e42;
     --blog-card-background: var(--color-base-100);
     --card-p: 1.5rem;
@@ -30,6 +31,10 @@ h2 {
     color: var(--color-primary);
 }
 
+input:focus {
+    outline: none;
+}
+
 p {
     text-justify: auto;
 }
@@ -39,7 +44,7 @@ p + p {
     margin-top: 0.5rem;
 }
 
-a:hover, button:hover {
+a:hover, button:hover, .icon:hover {
     color: var(--color-secondary-highlight);
     cursor: pointer;
     transition: color 0.125s;
