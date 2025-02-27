@@ -15,5 +15,5 @@ export const events: Event[] = [
         name: "Musical Novo",
         link: "http://localhost:5173"
     },
-    // Add more albums as needed
+    // Add more events as needed
 ];
