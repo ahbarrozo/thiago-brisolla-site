@@ -42,7 +42,7 @@
                 {/if} 
             </figure>
             <div class="card-body">
- 	    	    <h2 class="card-title text-3xl">{@html title}</h2>
+ 	    	    <h2 class="card-title text-3xl">{title}</h2>
 		    	<span class="text-primary text-xl">{subtitle}</span>
                 <p class="mb-4 text-lg">
                     {@html truncatedHTML()}
@@ -64,10 +64,10 @@
                                 mr-10 rounded-lg" />
                 {/if}
             
-                <div class="relative h-120 sm:h-96 w-96 sm:w-xl lg:w-2xl xl:w-3xl 2xl:w-5xl">
+                <div class="relative h-160 sm:h-96 w-80 sm:w-xl lg:w-2xl xl:w-3xl 2xl:w-5xl">
                     <div class="absolute top-0">
- 	    	            <h1 class="text-5xl">{@html title}</h1>
-		    	        <span class="text-primary text-2xl">{subtitle}</span>
+ 	    	            <h1 class="!text-2xl !sm:text-5xl">{title}</h1>
+		    	        <span class="text-primary sm:text-2xl">{subtitle}</span>
                         <div class="py-4 text-xl">
                             {@html truncatedHTML(500)}
                         </div>
@@ -82,10 +82,10 @@
     {/if}
 
     <dialog bind:this={modal} class="modal">
-        <div class="modal-box w-full max-w-2/3 m-10">
+        <div class="modal-box absolute lg:static left-[2.5vw] w-[95vw] max-w-[95vw] lg:w-3/4 lg:max-w-3/4 p-4">
             <div class="flex justify-between">
-                <div>
-                    <h3 class="text-lg font-bold">{@html title}</h3>
+                <div class="pt-6 pl-6">
+                    <h1 class="font-bold">{title}</h1>
                     <span class="text-primary">{subtitle}</span>
                 </div>
                 <form method="dialog">
@@ -99,7 +99,7 @@
                              stroke="currentColor"
                              class="size-[1.2em]">
                             <path d="M19 6.41L17.59 5 12 10.59 
-                                     6.41 5 5 6.41 10.59 12 5 
+                                   6.41 5 5 6.41 10.59 12 5 
                                      17.59 6.41 19 12 13.41 17.59 
                                      19 19 17.59 13.41 12z"></path>
                         </svg>

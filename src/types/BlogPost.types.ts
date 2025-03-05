@@ -5,7 +5,7 @@ export interface BlogPostImage {
 }
 
 export interface BlogPostProps {
-  id: number;
+  id?: number;
   date: string;
   title: string;
   subtitle?: string;
