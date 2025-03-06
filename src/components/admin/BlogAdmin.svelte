@@ -10,7 +10,7 @@
 
     const { blogPosts }: BlogProps = $props();
     const emptyPost: BlogPostProps = {
-        date: (new Date()).toISOString().slice(0, 11),
+        date: (new Date()).toISOString(),
         images: [] as BlogPostImage[],
         isFirst: true,
         subtitle: '',
@@ -26,13 +26,13 @@
     let pages = $derived(Array.from({ length: numPages }, (_, i) => i + 1));
 
     function displayNewPost() {
-        posts = [{...emptyPost, id: posts.length+1}, ...posts];
+        posts = [{...emptyPost}, ...posts];
     }
 
 </script>
 <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-10">
     <button class="btn btn-primary w-full" onclick={displayNewPost}>Nova postagem</button>
-    {#each displayedPosts as post (post.id)}
+    {#each displayedPosts as post (post.date)}
         <BlogPostAdmin {...post} /> 
     {/each}
 </div>
