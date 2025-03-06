@@ -1,9 +1,5 @@
 <script lang="ts">
-	import type { Album } from "../types/Album.types";
-
-    interface DiscographyProps {
-        albums: Album[];
-    }
+	import type { DiscographyProps } from "../types/Album.types";
 
     const { albums }: DiscographyProps = $props();
 </script>
