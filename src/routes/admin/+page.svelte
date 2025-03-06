@@ -1,8 +1,10 @@
 <script lang="ts">
     import { aboutSections } from "src/assets/About.mockdata";
+    import { albums } from "src/assets/Discography.mockdata";
     import { blogPosts } from "src/assets/Blog.mockdata";
     import AboutAdmin from "src/components/admin/AboutAdmin.svelte";
     import BlogAdmin from "src/components/admin/BlogAdmin.svelte";  
+    import DiscographyAdmin from "src/components/admin/DiscographyAdmin.svelte";
 
     let blogEntries = $state(blogPosts);
 
@@ -21,7 +23,9 @@
             <AboutAdmin aboutSections={aboutSections} />
         </div>
         <input type="radio" name="my_tabs_3" class="tab" aria-label="OBRA" />
-        <div class="tab-content bg-base-100 border-base-300 p-6">OBRA</div>
+        <div class="tab-content bg-base-100 border-base-300 p-6">
+            <DiscographyAdmin albums={albums} />
+        </div>
     </div>
 </main>
 
