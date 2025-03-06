@@ -3,7 +3,7 @@ import { type BlogPostProps } from "../types/BlogPost.types";
 export const blogPosts: BlogPostProps[] = [
     {
         id: 0,
-        date: '01-02-2025',
+        date: '2025-01-02T14:00:00.000Z',
         title: "Minha postagem mais recente",
         subtitle: "Um teste com várias fotos",
         text: `Este teste traz múltiplas fotos, e o objetivo é testar como functiona o modo carrossel. 
@@ -70,7 +70,7 @@ nomes de rebuço, é que é mesmo um querer invocar que ele forme forma com as p
     },
     {
         id: 1,
-        date: '01-01-2025',
+        date: '2025-01-01T14:00:00.000Z',
         title: "Minha décima postagem",
         subtitle: "Testando o diário com uma foto",
         text: "Aqui vai um teste com um texto relativament simples para testar a interface com uma foto.",
@@ -84,7 +84,7 @@ nomes de rebuço, é que é mesmo um querer invocar que ele forme forma com as p
     },
     {
         id: 2,
-        date: '01-01-2025',
+        date: '2025-01-01T13:00:00.000Z',
         title: "Minha nona postagem",
         subtitle: "Testando o diário com uma foto",
         text: "Aqui vai um teste com um texto relativament simples para testar a interface com uma foto.",
@@ -98,7 +98,7 @@ nomes de rebuço, é que é mesmo um querer invocar que ele forme forma com as p
     },
    {
         id: 3,
-        date: '01-01-2025',
+        date: '2025-01-01T12:00:00.000Z',
         title: "Minha oitava postagem",
         subtitle: "Testando o diário com uma foto",
         text: "Aqui vai um teste com um texto relativament simples para testar a interface com uma foto.",
@@ -112,7 +112,7 @@ nomes de rebuço, é que é mesmo um querer invocar que ele forme forma com as p
     },
     {
         id: 4,
-        date: '01-01-2025',
+        date: '2025-01-01T11:00:00.000Z',
         title: "Minha sétima postagem",
         subtitle: "Testando o diário com uma foto",
         text: "Aqui vai um teste com um texto relativament simples para testar a interface com uma foto.",
@@ -126,7 +126,7 @@ nomes de rebuço, é que é mesmo um querer invocar que ele forme forma com as p
     },
     {
         id: 5,
-        date: '01-01-2025',
+        date: '2025-01-01T10:00:00.000Z',
         title: "Minha sexta postagem",
         subtitle: "Testando o diário com uma foto",
         text: "Aqui vai um teste com um texto relativament simples para testar a interface com uma foto.",
@@ -140,7 +140,7 @@ nomes de rebuço, é que é mesmo um querer invocar que ele forme forma com as p
     },
     {
         id: 6,
-        date: '01-01-2025',
+        date: '2025-01-01T09:00:00.000Z',
         title: "Minha quinta postagem",
         subtitle: "Testando o diário com uma foto",
         text: "Aqui vai um teste com um texto relativament simples para testar a interface com uma foto.",
@@ -154,7 +154,7 @@ nomes de rebuço, é que é mesmo um querer invocar que ele forme forma com as p
     },
     {
         id: 7,
-        date: '01-01-2025',
+        date: '2025-01-01T08:00:00.000Z',
         title: "Minha quarta postagem",
         subtitle: "Testando o diário com uma foto",
         text: "Aqui vai um teste com um texto relativament simples para testar a interface com uma foto.",
@@ -168,7 +168,7 @@ nomes de rebuço, é que é mesmo um querer invocar que ele forme forma com as p
     },
     {
         id: 8,
-        date: '01-01-2025',
+        date: '2025-01-01T07:00:00.000Z',
         title: "Minha terceira postagem",
         subtitle: "Testando o diário com uma foto",
         text: "Aqui vai um teste com um texto relativament simples para testar a interface com uma foto.",
@@ -182,7 +182,7 @@ nomes de rebuço, é que é mesmo um querer invocar que ele forme forma com as p
     },
     {
         id: 9,
-        date: '01-01-2025',
+        date: '2025-01-02T14:00:00.000Z',
         title: "Minha segundaa postagem",
         subtitle: "Testando o diário com uma foto",
         text: "Aqui vai um teste com um texto relativament simples para testar a interface com uma foto.",
@@ -196,7 +196,7 @@ nomes de rebuço, é que é mesmo um querer invocar que ele forme forma com as p
     },
     {
         id: 10,
-        date: '01-01-2024',
+        date: '2024-01-01T11:00:00.000Z',
         title: "Minha primeira postagem",
         subtitle: "Testando o diário com uma foto",
         text: "Aqui vai um teste com um texto relativament simples para testar a interface com uma foto.",
