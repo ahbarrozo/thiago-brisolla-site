@@ -16,7 +16,7 @@
                          alt={"Capa do disco " + album.title}
                          class="object-cover object-top 
                                 overflow-hidden h-80 w-80 
-                                rounded-lg shadow-2xl ml-4 mr-10" />
+                                rounded-lg shadow-2xl ml-4 mr-4 sm:mr-10" />
                 {/if}
                 <div class="relative h-80 w-80">
                     <div class="absolute top-0">
