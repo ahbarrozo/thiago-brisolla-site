@@ -3,3 +3,7 @@ export interface AboutSection {
     image?: string;
     text: string;
 }
+
+export interface AboutProps {
+        aboutSections: AboutSection[];
+    }

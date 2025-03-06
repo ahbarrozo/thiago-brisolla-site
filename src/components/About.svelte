@@ -1,9 +1,5 @@
 <script lang="ts">
-	import type { AboutSection } from "../types/About.types";
-
-    interface AboutProps {
-        aboutSections: AboutSection[];
-    }
+	import type { AboutProps, AboutSection } from "../types/About.types";
 
     const { aboutSections }: AboutProps = $props();
 </script>
