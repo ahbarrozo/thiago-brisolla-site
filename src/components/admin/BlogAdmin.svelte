@@ -9,7 +9,7 @@
     const POSTS_PER_PAGE = 6;
 
     const { blogPosts }: BlogProps = $props();
-    let emptyPost: BlogPostProps = {
+    const emptyPost: BlogPostProps = {
         date: (new Date()).toISOString().slice(0, 11),
         images: [] as BlogPostImage[],
         isFirst: true,
@@ -18,25 +18,21 @@
         text: ''
     } 
 
+    let posts = $state(blogPosts)
     let currentPage = $state(1);
     let firstPost = $derived((currentPage - 1) * POSTS_PER_PAGE);
-    let displayedPosts = $derived(blogPosts.slice(firstPost, firstPost + POSTS_PER_PAGE));
-    let isNewPostDisplayed = $state(false);
-    const numPages = Math.ceil(blogPosts.length / POSTS_PER_PAGE);
-    const pages = Array.from({ length: numPages }, (_, i) => i + 1);
-    
-    const displayNewPost = () => isNewPostDisplayed = true;
+    let displayedPosts = $derived(posts.slice(firstPost, firstPost + POSTS_PER_PAGE));
+    let numPages = $derived(Math.ceil(posts.length / POSTS_PER_PAGE));
+    let pages = $derived(Array.from({ length: numPages }, (_, i) => i + 1));
+
+    function displayNewPost() {
+        posts = [{...emptyPost, id: posts.length+1}, ...posts];
+    }
 
 </script>
 <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-10">
-    {#if !isNewPostDisplayed}
-        <button class="btn btn-primary w-full" onclick={displayNewPost}>Nova postagem</button>
-    {/if}
-
-    {#if isNewPostDisplayed}
-        <BlogPostAdmin {...emptyPost} />  
-    {/if}
-    {#each displayedPosts as post}
+    <button class="btn btn-primary w-full" onclick={displayNewPost}>Nova postagem</button>
+    {#each displayedPosts as post (post.id)}
         <BlogPostAdmin {...post} /> 
     {/each}
 </div>
