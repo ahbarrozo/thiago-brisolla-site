@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { Event } from "../types/Event.types";
+	import { PUBLIC_LOCALE } from "$env/static/public";
+	import type { Event } from "src/types/Event.types";
 
     interface EventsProps {
         events: Event[];
@@ -8,7 +9,7 @@
     const { events }: EventsProps = $props();
     const listEvents = events.reduce((acc, event) => {
         event.dates.forEach(date => {
-            const dateFormat = new Intl.DateTimeFormat('pt-BR', 
+            const dateFormat = new Intl.DateTimeFormat(PUBLIC_LOCALE, 
                 { day: '2-digit', month: 'long', year: 'numeric' });
             const dateString = dateFormat.format(new Date(date));
             const day = dateString.slice(0, 2);

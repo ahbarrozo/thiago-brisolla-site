@@ -7,6 +7,7 @@
 
     import { type BlogPostProps } from 'src/types/BlogPost.types';
 	import { TrashSolid } from 'svelte-awesome-icons';
+	import { PUBLIC_LOCALE } from '$env/static/public';
 
     interface Button {
         active: () => boolean;
@@ -25,7 +26,7 @@
         isFirst
     }: BlogPostProps = $props();
 
-    const dateFormat = new Intl.DateTimeFormat('pt-BR', 
+const dateFormat = new Intl.DateTimeFormat(PUBLIC_LOCALE, 
         { day: '2-digit', month: 'long', year: 'numeric' });
     const dateString = $derived(dateFormat.format(new Date(date)));
 

@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { type BlogPostProps } from '../types/BlogPost.types';
+	import { PUBLIC_LOCALE } from '$env/static/public';
+    import { type BlogPostProps } from 'src/types/BlogPost.types';
 
     const { 
         date, 
@@ -11,7 +12,7 @@
     }: BlogPostProps = $props();
     let modal: HTMLDialogElement;    
 
-    const dateFormat = new Intl.DateTimeFormat('pt-BR', 
+    const dateFormat = new Intl.DateTimeFormat(PUBLIC_LOCALE, 
         { day: '2-digit', month: 'long', year: 'numeric' });
     const dateString = $derived(dateFormat.format(new Date(date)));
 
