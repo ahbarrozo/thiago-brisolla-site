@@ -1,6 +1,7 @@
 <script lang="ts">
-	import '../app.css';
-    import Toolbar from '../components/Toolbar.svelte';
+	import 'src/app.css';
+    import Toaster from 'src/components/Toaster.svelte'
+    import Toolbar from 'src/components/Toolbar.svelte';
 	let { children } = $props();
 </script>
 
@@ -15,5 +16,6 @@
                        p-10 bg-base-300">
             © Copyright Thiago Brisolla - Todos os direitos reservados
         </footer>
+        <Toaster />
     </div>
 </div>
