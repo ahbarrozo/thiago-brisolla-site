@@ -1,10 +1,6 @@
 <script lang="ts">
 	import { PUBLIC_LOCALE } from "$env/static/public";
-	import type { Event } from "src/types/Event.types";
-
-    interface EventsProps {
-        events: Event[];
-    }
+	import type { Event, EventsProps } from "src/types/Event.types";
 
     const { events }: EventsProps = $props();
     const listEvents = events.reduce((acc, event) => {
