@@ -4,7 +4,6 @@
 
     const { aboutSections }: AboutProps = $props();
     const emptySection: AboutSection = {
-        id: aboutSections.length,
         text: ''
     };
         let sections: AboutSection[] = $state(aboutSections)

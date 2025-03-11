@@ -1,5 +1,5 @@
 export interface AboutSection {
-    id: number;
+    id?: number;
     image?: string;
     text: string;
 }
