@@ -65,6 +65,17 @@ a:hover, button:hover, .icon:hover {
     color: white;
 }
 
+.calendar-nav-button {
+    background: var(--color-base-100);
+    width: 24px;
+    height: 24px;
+    stroke: white;
+    stroke-width: 1.5;
+    fill: none;
+    cursor: pointer;
+    border: none;
+}
+
 .card {
     background: var(--blog-card-background);
 }
