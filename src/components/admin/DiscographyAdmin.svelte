@@ -6,7 +6,7 @@
 
     const { albums }: DiscographyProps = $props();
     const emptyAlbum: Album & { isNew?: boolean } = {
-        date: (new Date()).toISOString(),
+        date: '',
         title: '',
         description: '',
         isNew: true
@@ -20,7 +20,10 @@
     let pages = $derived(Array.from({ length: numPages }, (_, i) => i + 1));
 
     function displayNewAlbum() {
-        discography = [{...emptyAlbum}, ...discography];
+        discography = [
+            {...emptyAlbum, description: 'Descreva a nova obra.'}, 
+            ...discography
+        ];
     }
 
 </script>
