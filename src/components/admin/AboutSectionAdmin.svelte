@@ -7,6 +7,7 @@
 
     import type { AboutSection } from 'src/types/About.types';
 	import { TrashSolid } from 'svelte-awesome-icons';
+	import { toaster } from 'src/stores/toaster.store';
 
     interface Button {
         active: () => boolean;
@@ -81,6 +82,17 @@
         ];
     });
 
+
+    function saveParagraph() {
+        const body = {
+            image,
+            text
+        };
+
+        toaster.show('Trying to save paragraph', 'success');
+        console.log(body);
+    }
+
     /** 
      *  Checks if the dialog HTML element is mounted, and if so, 
      *  calls the showModal function
@@ -125,7 +137,8 @@
         <p>{image}</p>
     </label> 
     <div class="flex justify-between">
-        <button class="btn btn-primary mt-10">Salvar</button>
+        <button class="btn btn-primary mt-10"
+                onclick={saveParagraph}>Salvar</button>
         <button class="btn btn-error text-white mt-10"
                 onclick={showModal}>
             <TrashSolid />

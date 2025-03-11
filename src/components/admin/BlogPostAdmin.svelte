@@ -4,10 +4,11 @@
     import { createEditor } from 'svelte-tiptap';
     import { Editor } from '@tiptap/core';
     import StarterKit from '@tiptap/starter-kit';
+    import { TrashSolid } from 'svelte-awesome-icons';
 
+    import { toaster } from 'src/stores/toaster.store';
     import { type BlogPostProps } from 'src/types/BlogPost.types';
-	import { TrashSolid } from 'svelte-awesome-icons';
-	import { PUBLIC_LOCALE } from '$env/static/public';
+    import { PUBLIC_LOCALE } from '$env/static/public';
 
     interface Button {
         active: () => boolean;
@@ -26,7 +27,7 @@
         isFirst
     }: BlogPostProps = $props();
 
-const dateFormat = new Intl.DateTimeFormat(PUBLIC_LOCALE, 
+    const dateFormat = new Intl.DateTimeFormat(PUBLIC_LOCALE, 
         { day: '2-digit', month: 'long', year: 'numeric' });
     const dateString = $derived(dateFormat.format(new Date(date)));
 
@@ -87,10 +88,23 @@ const dateFormat = new Intl.DateTimeFormat(PUBLIC_LOCALE,
                 command: () => $editor.chain().focus().toggleItalic().run(),
                 content: 'I',
                 name: 'italic',
-                type: 'inline'
+        type: 'inline'
             },
         ];
     });
+
+    function savePost() {
+        const body: BlogPostProps = {
+            date: date ?? (new Date()).toISOString(),
+            title,
+            subtitle,
+            images,
+            text
+        }
+
+        toaster.show('Trying to save post', 'success');
+        console.log({body});
+    }
 
     /** 
      *  Checks if the dialog HTML element is mounted, and if so, 
@@ -104,6 +118,7 @@ const dateFormat = new Intl.DateTimeFormat(PUBLIC_LOCALE,
 </script>
 
 <fieldset class={`fieldset ${isFirst ? "w-full" : "w-[3/10]"} bg-base-200 border border-base-300 p-4 rounded-box`}>
+    <h2 class="text-xl">{ dateString }</h2>
     <label for="title" class="input validator text-xl w-auto">
         <input type="input" class="input input-lg" 
                required value={title} 
@@ -158,7 +173,8 @@ const dateFormat = new Intl.DateTimeFormat(PUBLIC_LOCALE,
         {/each}
     {/if}
     <div class="flex justify-between">
-        <button class="btn btn-primary mt-10">Salvar</button>
+        <button class="btn btn-primary mt-10"
+                onclick={savePost}>Salvar</button>
         {#if !isFirst}
             <button class="btn btn-error text-white mt-10"
                     onclick={showModal}>
@@ -177,7 +193,6 @@ const dateFormat = new Intl.DateTimeFormat(PUBLIC_LOCALE,
         <!-- if there is a button in form, it will close the modal -->
         <button class="btn btn-error text-white">Sim</button>
         <button class="btn btn-secondary text-white">Não</button>
-
       </form>
     </div>
   </div>
