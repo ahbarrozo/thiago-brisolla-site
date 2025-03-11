@@ -1,17 +1,11 @@
 <script lang="ts">
-	import type { Contact } from "../types/Contact.types";
-    import type { SocialMedia } from "../types/SocialMedia.types";
+	import type { ContactProps } from "../types/Contact.types";
 
     import {
         FacebookBrands,
         InstagramBrands,
         SpotifyBrands
     } from "svelte-awesome-icons";
-
-    interface ContactProps {
-        contacts: Contact[];
-        socialMedia: SocialMedia[];
-    }
 
     function getIcon(name: string) {
         switch(name) {
