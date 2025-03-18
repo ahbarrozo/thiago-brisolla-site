@@ -19,13 +19,15 @@
     }
 
     let {
+        id,
         date,
         images,
         subtitle,
         text,
         title,
-        isFirst
-    }: BlogPostProps = $props();
+        isFirst,
+        onDelete
+    }: BlogPostProps & { onDelete: Function }= $props();
 
     const dateFormat = new Intl.DateTimeFormat(PUBLIC_LOCALE, 
         { day: '2-digit', month: 'long', year: 'numeric' });
@@ -35,7 +37,17 @@
     let editorDiv: HTMLElement;
     let modal: HTMLDialogElement;    
     let menuItems: Button[] = $state([]);
+    let postForm = $state({
+        subtitle,
+        title,
+        images
+    })
 
+    /**
+     *  Upon mounting, the tiptap editor will be initialized,
+     *  including a callback to update the text field and all 
+     *  its buttons.
+     */
     onMount(() => {
         editor = createEditor({
             extensions: [StarterKit],
@@ -88,22 +100,83 @@
                 command: () => $editor.chain().focus().toggleItalic().run(),
                 content: 'I',
                 name: 'italic',
-        type: 'inline'
+                type: 'inline'
             },
         ];
     });
 
-    function savePost() {
-        const body: BlogPostProps = {
-            date: date ?? (new Date()).toISOString(),
-            title,
-            subtitle,
-            images,
-            text
-        }
+    /**
+     *  Calls the DELETE API function to delete the post
+     *  based on its ID. This function is triggered at the 
+     *  confirmation of the dialog message. In case of success, 
+     *  a parent function 'onDelete' will be called to remove 
+     *  the element from the DOM.
+     */
+    async function deletePost() {
+        const blogPostFormData = new FormData();
+        blogPostFormData.append('id', id!.toString());
 
-        toaster.show('Trying to save post', 'success');
-        console.log({body});
+        const response = await fetch('?/deleteBlogPost', {  
+            method: 'POST',
+            body: blogPostFormData
+        });
+        const responseData = await response.json();
+
+        if (responseData.status === 200) {
+            toaster.show('Post deleted', 'success');
+            onDelete(id);
+        }
+        else
+            toaster.show('Error: could not delete post', 'error');
+        modal.close();
+    }
+
+    /**
+     *  Calls the POST or PUT API request for blog posts, depending 
+     *  on the 'isFirst' props.
+     */
+    async function savePost() {
+        const blogPostFormData = new FormData();
+        const body: BlogPostProps = {
+            id,
+            date: date ?? (new Date()).toISOString(),
+            text,
+            title: postForm.title,
+            subtitle: postForm.subtitle
+        };
+
+        Object.entries(body).forEach(([k, v]) => {
+            if (v)
+                blogPostFormData.append(k, v);
+        });
+
+        /**
+         *  JSON stringify the array, to prevent issues with 
+         *  formData converting empty arrays into empty strings
+         */
+        blogPostFormData.append('images', JSON.stringify(postForm.images));
+    
+        const response = isFirst ?
+                         await fetch('?/saveBlogPost', {
+                             method: 'POST',
+                             body: blogPostFormData
+                         }) :
+                         await fetch('?/updateBlogPost', {
+                             method: 'POST',
+                             body: blogPostFormData
+                         });
+        
+        const responseData = await response.json();
+        switch(responseData.status) {
+            case 200:
+                toaster.show('Post successfully updated', 'success');
+                break;
+            case 201:
+                toaster.show('New post successfully created', 'success');
+                break;
+            default:
+                toaster.show('An error has occurred', 'error');
+        }
     }
 
     /** 
@@ -119,55 +192,43 @@
 
 <fieldset class={`fieldset ${isFirst ? "w-full" : "w-[3/10]"} bg-base-200 border border-base-300 p-4 rounded-box`}>
     <h2 class="text-xl">{ dateString }</h2>
-    <label for="title" class="input validator text-xl w-auto">
-        <input type="input" class="input input-lg" 
-               required value={title} 
-               pattern="[A-Za-z][A-Za-z0-9\-]*" 
-               minlength="1" maxlength="100" 
-               title="Only letters, numbers or dash" />
+    <label for="title" class="input text-xl w-auto">
+        <input type="input" class="input input-lg"
+               placeholder="Título"
+               bind:value={postForm.title} />
     </label>
-    <div class="validator-hint hidden">O título deve ter entre 1 e 100 caracteres</div>
-
-    <label for="subtitle" class="input validator text-xl w-auto">
+    <label for="subtitle" class="input text-xl w-auto">
         <input type="input" class="input input-lg" 
                placeholder="Subtítulo"
-               value={subtitle}
-               pattern="[A-Za-z][A-Za-z0-9\-]*" 
-               maxlength="100" 
-               title="Only letters, numbers or dash" />
+               bind:value={postForm.subtitle} />
     </label>
-    <div class="validator-hint hidden">O subtítulo deve ter no máximo 100 caracteres</div>
-
     <label for="text" class="input text-xl w-auto flex flex-col gap-y-4 bg-base-300 overflow-y-scroll h-100">
         <div class="flex mt-4 gap-x-4">
         {#if editor}
             <div class="join">
-                {#each menuItems.filter(item => item.type === 'block') as item}
-                    <button aria-label={item.content}
-                            class="btn btn-square join-item {item.active() ? 'btn-active' : ''}"
-                            onclick={() => item.command()}
-                        >{item.content}</button>
-                {/each}
-            </div>
-                
-            <div class="join ml-2">
-                {#each menuItems.filter(item => item.type === 'inline') as item}
-                    <button aria-label={item.content}
-                            class="btn btn-square join-item {item.active() ? 'btn-active' : ''}"
-                            onclick={() => item.command()}
-                        >{item.content}</button>
+           {#each menuItems.filter(item => item.type === 'block') as item}
+                   <button aria-label={item.content}
+                           class="btn btn-square join-item {item.active() ? 'btn-active' : ''}"
+                           onclick={() => item.command()}
+                       >{item.content}</button>
+               {/each}
+           </div>
+           <div class="join ml-2">
+               {#each menuItems.filter(item => item.type === 'inline') as item}
+                   <button aria-label={item.content}
+                           class="btn btn-square join-item {item.active() ? 'btn-active' : ''}"
+                           onclick={() => item.command()}
+                       >{item.content}</button>
                 {/each}
             </div>
         {/if}
         </div>
-        <div bind:this={editorDiv}></div>
+        <div class="w-full" bind:this={editorDiv}></div>
     </label>
-    <div class="validator-hint hidden">Insira um texto</div>
-   
     <h3 class="text-3xl m-4">Images</h3>
-    {#if images && images.length > 0}
-        {#each images as image}
-            <label for="images" class="input flex flex-col validator text-xl w-auto">
+    {#if postForm.images && postForm.images.length > 0}
+        {#each postForm.images as image}
+            <label for="images" class="input flex flex-col text-xl w-auto">
                 <p>{image.path}</p>
             </label> 
         {/each}
@@ -191,7 +252,8 @@
     <div class="modal-action">
       <form class="flex gap-x-4" method="dialog">
         <!-- if there is a button in form, it will close the modal -->
-        <button class="btn btn-error text-white">Sim</button>
+        <button class="btn btn-error text-white"
+                onclick={deletePost}>Sim</button>
         <button class="btn btn-secondary text-white">Não</button>
       </form>
     </div>

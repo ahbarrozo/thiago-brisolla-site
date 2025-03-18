@@ -18,12 +18,14 @@
     }
 
     let {
+        id,
         date,
         description,
-        image,
+        images,
         title,
-        isNew
-    }: Album & { isNew?: boolean } = $props();
+        isNew,
+        onDelete
+    }: Album & { isNew?: boolean, onDelete: Function } = $props();
 
     let cally;
     let calendar = $state(date);
@@ -33,12 +35,24 @@
     let inputRef = $state<HTMLInputElement | null>(null);
     let modal: HTMLDialogElement;    
     let menuItems: Button[] = $state([]);
+    let postForm = $state({
+        date,
+        description,
+        images,
+        title
+    })
     let showCalendar = $state(false);
 
+    // cally is a module that works only on client-side
     onMount(async () => {
         cally = await import("cally");
     })
 
+    /**
+     *  Upon mounting, the tiptap editor will be initialized,
+     *  including a callback to update the text field and all 
+     *  its buttons.
+     */
     onMount(() => {
         editor = createEditor({
             extensions: [StarterKit],
@@ -116,15 +130,77 @@
             showCalendar = false;
     }
 
-    function saveAlbum() {
+    /**
+     *  Calls the DELETE API function to delete the album
+     *  based on its ID. This function is triggered at the 
+     *  confirmation of the dialog message. In case of success, 
+     *  a parent function 'onDelete' will be called to remove 
+     *  the element from the DOM.
+     */
+    async function deleteAlbum() {
+        const albumFormData = new FormData();
+        albumFormData.append('id', id!.toString());
+
+        const response = await fetch('?/deleteAlbum', {  
+            method: 'POST',
+            body: albumFormData
+        });
+        const responseData = await response.json();
+
+        if (responseData.status === 200) {
+            toaster.show('Album deleted', 'success');
+            onDelete(id);
+        }
+        else
+            toaster.show('Error: could not delete album', 'error');
+        modal.close();
+    }
+
+      /**
+     *  Calls the POST or PUT API request for albums, depending 
+     *  on the presence of an id prop.
+     */
+    async function saveAlbum() {
+        const albumFormData = new FormData();
         const body: Album = {
-            title,
-            date,
+            id,  // include only if it exists
+            date: calendar,
             description,
+            title: postForm.title
         };
 
-        toaster.show('Trying to save album');
-        console.log(body);
+        Object.entries(body).forEach(([k, v]) => {
+            if (v)
+                albumFormData.append(k, v);
+        });       
+
+        /**
+         *  JSON stringify the array, to prevent issues with 
+         *  formData converting empty arrays into empty strings
+         */
+        albumFormData.append('images', JSON.stringify(postForm.images));
+        console.log({albumFormData})
+        const response = !id ?
+                         await fetch('?/saveAlbum', {
+                             method: 'POST',
+                             body: albumFormData
+                         }) :
+                         await fetch('?/updateAlbum', {
+                             method: 'POST',
+                             body: albumFormData
+                         });
+
+        const responseData = await response.json();
+        switch(responseData.status) {
+            case 200:
+                toaster.show('Album successfully updated', 'success');
+                break;
+            case 201:
+                toaster.show('New album successfully created', 'success');
+                break;
+            default:
+                toaster.show('An error has occurred', 'error');
+        }
     }
 
     /** 
@@ -141,7 +217,7 @@
 <fieldset class={`fieldset ${isNew ? "w-full" : "w-[4/9]"} bg-base-200 border border-base-300 p-4 rounded-box`}>
     <div class="flex flex-row gap-x-4">
         <label for="title" class="input text-xl w-full">
-            <input type="input" class="input input-lg" value={title} placeholder="Título" />
+            <input type="input" class="input input-lg" bind:value={postForm.title} placeholder="Título" />
         </label>
         <label for="date" class="input text-xl w-100 z-50">
             <input type="input"
@@ -203,13 +279,18 @@
             </div>
         {/if}
         </div>
-        <div bind:this={editorDiv}></div>
+        <div bind:this={editorDiv}
+             class="w-full"></div>
     </label>
    
-    <h3 class="text-3xl m-4">Image</h3>
-    <label for="images" class="input flex flex-col validator text-xl w-auto">
-        <p>{image}</p>
-    </label> 
+    <h3 class="text-3xl m-4">Imagem</h3>
+    {#if postForm.images && postForm.images.length > 0}
+        {#each postForm.images as image}
+            <label for="images" class="input flex flex-col text-xl w-auto">
+                <p>{image.path}</p>
+            </label> 
+        {/each}
+    {/if} 
     <div class="flex justify-between">
         <button class="btn btn-primary mt-10"
                 onclick={saveAlbum}>Salvar</button>
@@ -228,7 +309,8 @@
     <p class="py-4">Você tem certeza que quer continuar?</p>
     <div class="modal-action">
       <form class="flex gap-x-4" method="dialog">
-        <button class="btn btn-error text-white">Sim</button>
+        <button class="btn btn-error text-white"
+                onclick={deleteAlbum}>Sim</button>
         <button class="btn btn-secondary text-white">Não</button>
       </form>
     </div>
