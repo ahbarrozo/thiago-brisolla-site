@@ -1,36 +1,34 @@
 <script lang="ts">
-    import { aboutSections } from "../assets/About.mockdata";
-    import { albums } from "../assets/Discography.mockdata";
-    import { blogPosts } from "../assets/Blog.mockdata";
-    import { contacts } from "../assets/Contact.mockdata";
-    import { cover } from "../assets/Cover.mockdata";
-    import { events } from "../assets/Events.mockdata";
-    import { socialMedia } from "../assets/SocialMedia.mockdata";
-    import About from "../components/About.svelte";
-    import Contact from "../components/Contact.svelte";
-    import Cover from "../components/Cover.svelte";
-    import Blog from "../components/Blog.svelte";  
-	import Discography from "../components/Discography.svelte";
-    import Events from "../components/Events.svelte";
+    import { cover } from "src/assets/Cover.mockdata";
+    import About from "src/components/About.svelte";
+    import Contact from "src/components/Contact.svelte";
+    import Cover from "src/components/Cover.svelte";
+    import Blog from "src/components/Blog.svelte";  
+	import Discography from "src/components/Discography.svelte";
+    import Events from "src/components/Events.svelte";
+    import { type PageData } from "src/types/PageData.types"
+
+    const { data } = $props<{ data: PageData }>();
+    const { apiData } = data;
 </script>
 
 <Cover cover={cover} />
 <main class="flex-1 px-4 md:px-12 2xl:px-36 bg-base-300">
     <div class="divider mt-0"></div>
     <h2 id="diario" class="text-4xl">DIÁRIO</h2>
-    <Blog blogPosts={blogPosts} />
+    <Blog blogPosts={apiData.blog_posts} />
     <div class="divider"></div>
     <h2 id="bio" class="text-4xl">QUEM SOU EU</h2>
-    <About aboutSections={aboutSections} />
+    <About aboutSections={apiData.about_sections} />
     <div class="divider"></div>
     <h2 id="obra" class="text-4xl">OBRA</h2>
-    <Discography albums={albums} /> 
+    <Discography albums={apiData.albums} />
     <div class="divider"></div>
     <h2 id="agenda" class="text-4xl">AGENDA</h2>
-    <Events events={events} /> 
+    <Events events={apiData.events} /> 
     <div class="divider"></div>
     <h2 id="contato" class="text-4xl">CONTATO</h2>
-    <Contact contacts={contacts} socialMedia={socialMedia}/>
+    <Contact contacts={apiData.contacts} socialMedia={apiData.social_media}/>
 </main>
 
 <style>
