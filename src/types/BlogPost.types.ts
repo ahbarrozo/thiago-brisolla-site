@@ -1,8 +1,4 @@
-export interface BlogPostImage {
-    description?: string;
-    path: string;
-    title?: string;
-}
+import type { Image } from "./Image.types";
 
 export interface BlogPostProps {
   id?: number;
@@ -10,6 +6,6 @@ export interface BlogPostProps {
   title: string;
   subtitle?: string;
   text: string;
-  images?: BlogPostImage[];
+  images?: Image[];
   isFirst?: boolean;
 }
