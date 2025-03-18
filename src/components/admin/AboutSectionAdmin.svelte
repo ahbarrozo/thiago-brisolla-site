@@ -17,14 +17,21 @@
         type: 'block' | 'inline'; 
     }
 
-    let { id, image, text }: AboutSection = $props();
-
+    let { id, num, images, text, onDelete }: AboutSection & { num: number, onDelete: Function } = $props();
 
     let editor = $state() as Readable<Editor>;
     let editorDiv: HTMLElement;
     let modal: HTMLDialogElement;    
     let menuItems: Button[] = $state([]);
+    let postForm = $state({
+        images
+    });
 
+    /**
+     *  Upon mounting, the tiptap editor will be initialized,
+     *  including a callback to update the text field and all 
+     *  its buttons.
+     */
     onMount(() => {
         editor = createEditor({
             extensions: [StarterKit],
@@ -82,15 +89,75 @@
         ];
     });
 
+    /**
+     *  Calls the DELETE API function to delete the section
+     *  based on its ID. This function is triggered at the 
+     *  confirmation of the dialog message. In case of success, 
+     *  a parent function 'onDelete' will be called to remove 
+     *  the element from the DOM.
+     */
+    async function deleteAboutSection() {
+        const aboutSectionFormData = new FormData();
+        aboutSectionFormData.append('id', id!.toString());
 
-    function saveParagraph() {
+        const response = await fetch('?/deleteAboutSection', {  
+            method: 'POST',
+            body: aboutSectionFormData
+        });
+        const responseData = await response.json();
+
+        if (responseData.status === 200) {
+            toaster.show('Section deleted', 'success');
+            onDelete(id);
+        }
+        else
+            toaster.show('Error: could not delete section', 'error');
+        modal.close();
+    }
+
+    /**
+     *  Calls the POST or PUT API request for about sections, depending 
+     *  on the presence of an id prop.
+     */
+    async function saveAboutSection() {
+        const aboutSectionFormData = new FormData();
         const body = {
-            image,
+            id: id && id.toString(),  // include only if it exists
             text
         };
 
-        toaster.show('Trying to save paragraph', 'success');
-        console.log(body);
+        Object.entries(body).forEach(([k, v]) => {
+            if (v)
+                aboutSectionFormData.append(k, v);
+        });       
+
+        /**
+         *  JSON stringify the array, to prevent issues with 
+         *  formData converting empty arrays into empty strings
+         */
+        aboutSectionFormData.append('images', JSON.stringify(postForm.images));
+
+        const response = !id ?
+                         await fetch('?/saveAboutSection', {
+                             method: 'POST',
+                             body: aboutSectionFormData
+                         }) :
+                         await fetch('?/updateAboutSection', {
+                             method: 'POST',
+                             body: aboutSectionFormData
+                         });
+
+        const responseData = await response.json();
+        switch(responseData.status) {
+            case 200:
+                toaster.show('Section successfully updated', 'success');
+                break;
+            case 201:
+                toaster.show('New section successfully created', 'success');
+                break;
+            default:
+                toaster.show('An error has occurred', 'error');
+        }
     }
 
     /** 
@@ -104,7 +171,7 @@
     }
 </script>
 
-<h2 class="text-3xl m-4">Parágrafo {id}</h2>
+<h2 class="text-3xl m-4">Parte {num}</h2>
 <fieldset class={`fieldset w-full bg-base-200 border border-base-300 mb-4 p-4 rounded-box`}>
     <label for="text" class="input text-xl w-auto flex flex-col gap-y-4 bg-base-300 overflow-y-scroll h-100">
         <div class="flex mt-4 gap-x-4">
@@ -128,17 +195,21 @@
             </div>
         {/if}
         </div>
-        <div bind:this={editorDiv}></div>
+        <div class="w-full" 
+             bind:this={editorDiv}></div>
     </label>
-    <div class="validator-hint hidden">Insira um texto</div>
    
-    <h3 class="text-3xl m-4">Image</h3>
-    <label for="images" class="input flex flex-col validator text-xl w-auto">
-        <p>{image}</p>
-    </label> 
+    <h3 class="text-3xl m-4">Imagem</h3>
+     {#if postForm.images && postForm.images.length > 0}
+        {#each postForm.images as image}
+            <label for="images" class="input flex flex-col text-xl w-auto">
+                <p>{image.path}</p>
+            </label> 
+        {/each}
+    {/if} 
     <div class="flex justify-between">
         <button class="btn btn-primary mt-10"
-                onclick={saveParagraph}>Salvar</button>
+                onclick={saveAboutSection}>Salvar</button>
         <button class="btn btn-error text-white mt-10"
                 onclick={showModal}>
             <TrashSolid />
@@ -152,7 +223,8 @@
         <p class="py-4">Você tem certeza que quer continuar?</p>
         <div class="modal-action">
             <form class="flex gap-x-4" method="dialog">
-                <button class="btn btn-error text-white">Sim</button>
+                <button class="btn btn-error text-white"
+                        onclick={deleteAboutSection}>Sim</button>
                 <button class="btn btn-secondary text-white">Não</button>
             </form>
         </div>
