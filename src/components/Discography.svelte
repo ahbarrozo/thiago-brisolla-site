@@ -7,8 +7,8 @@
     {#each albums as album}
         <div class="hero bg-base-200 rounded-2xl mb-10 w-[95vw] xl:w-7/15">
             <div class="hero-content flex-col sm:flex-row">
-                {#if album.image}
-                    <img src={album.image}
+                {#if album.images && album.images.length > 0}
+                    <img src={album.images[0].path}
                          alt={"Capa do disco " + album.title}
                          class="object-cover object-top 
                                 overflow-hidden h-80 w-80 

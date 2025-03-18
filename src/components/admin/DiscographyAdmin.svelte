@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { Album, DiscographyProps } from 'src/types/Album.types';
 	import AlbumAdmin from './AlbumAdmin.svelte';
+	import type { Image } from 'src/types/Image.types';
 
     const ALBUMS_PER_PAGE = 6;
 
@@ -9,7 +10,8 @@
         date: '',
         title: '',
         description: '',
-        isNew: true
+        images: [] as Image[],
+        isNew: true, 
     } 
 
     let discography = $state(albums)
@@ -25,12 +27,22 @@
             ...discography
         ];
     }
-
+    
+    /**
+     *  Function to be called upon an onDelete event is 
+     *  triggered on the child component. It filters the 
+     *  albums by ID for deleted albums
+     *
+     *  @param id : number ID of the deleted album
+     */
+    function onDelete(id: number) {
+        discography = discography.filter(album => album.id !== id);
+    }
 </script>
 <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-10">
     <button class="btn btn-primary w-full" onclick={displayNewAlbum}>Nova obra</button>
-    {#each displayedAlbums as album (`${album.title}_${album.date}`)}
-        <AlbumAdmin {...album} /> 
+    {#each displayedAlbums as album (album.id)}
+        <AlbumAdmin {...album} onDelete={() => onDelete(album.id!)} /> 
     {/each}
 </div>
 <div class="join">

@@ -1,6 +1,7 @@
 <script lang="ts">
-    import { type BlogPostImage, type BlogPostProps } from 'src/types/BlogPost.types';
+    import { type BlogPostProps } from 'src/types/BlogPost.types';
     import BlogPostAdmin from './BlogPostAdmin.svelte';
+	import type { Image } from 'src/types/Image.types';
 
     interface BlogProps {
         blogPosts: BlogPostProps[];
@@ -11,7 +12,7 @@
     const { blogPosts }: BlogProps = $props();
     const emptyPost: BlogPostProps = {
         date: (new Date()).toISOString(),
-        images: [] as BlogPostImage[],
+        images: [] as Image[],
         isFirst: true,
         subtitle: '',
         title: '',
@@ -29,11 +30,22 @@
         posts = [{...emptyPost}, ...posts];
     }
 
+    /**
+     *  Function to be called upon an onDelete event is 
+     *  triggered on the child component. It filters the 
+     *  posts by ID for deleted posts
+     *
+     *  @param id : number ID of the deleted post
+     */
+    function onDelete(id: number) {
+        posts = posts.filter(post => post.id !== id);
+    }
+
 </script>
 <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-10">
     <button class="btn btn-primary w-full" onclick={displayNewPost}>Nova postagem</button>
-    {#each displayedPosts as post (post.date)}
-        <BlogPostAdmin {...post} /> 
+    {#each displayedPosts as post (post.id)}
+        <BlogPostAdmin {...post} onDelete={() => onDelete(post.id!)} /> 
     {/each}
 </div>
 <div class="join">
