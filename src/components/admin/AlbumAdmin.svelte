@@ -172,14 +172,14 @@
         Object.entries(body).forEach(([k, v]) => {
             if (v)
                 albumFormData.append(k, v);
-        });       
+        });     
 
         /**
          *  JSON stringify the array, to prevent issues with 
          *  formData converting empty arrays into empty strings
          */
         albumFormData.append('images', JSON.stringify(postForm.images));
-        console.log({albumFormData})
+
         const response = !id ?
                          await fetch('?/saveAlbum', {
                              method: 'POST',
@@ -222,7 +222,7 @@
         <label for="date" class="input text-xl w-100 z-50">
             <input type="input"
                    class="input input-lg"
-                   value={calendar}
+                   value={calendar.slice(0, 10)}
                    placeholder="Data de lançamento"
                    bind:this={inputRef}
                    onfocus={() => showCalendar = true } 
