@@ -1,3 +1,4 @@
+import { writeFileSync } from 'fs';
 import { fail, type Actions, type ServerLoad } from '@sveltejs/kit';
 import type { ApiData, PageData } from 'src/types/PageData.types';
 
@@ -90,6 +91,90 @@ export const actions: Actions = {
             return fail(500, { success: false, error });
         }
     },
+    deleteContact: async ({ request, cookies, fetch }) => {
+        try {
+            const formData = await request.formData();
+            let token = cookies.get('token');
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+
+            if (!token) {
+                return { success: false, error: 'Unauthroized: no token found'};
+            }
+
+            const id = formData.get('id');
+            const response = await fetch(API_ENDPOINT + `contacts/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            const result = await response.json();
+ 
+            if (result.error)
+                // @ts-ignore
+                return fail(400, 'Invalid or expired token')
+            return { success: true, data: result };
+        } catch (error) {
+            return fail(500, { success: false, error });
+        }
+    },
+    deleteEvent: async ({ request, cookies, fetch }) => {
+        try {
+            const formData = await request.formData();
+            let token = cookies.get('token');
+
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+
+
+            if (!token) {
+                return { success: false, error: 'Unauthroized: no token found'};
+            }
+
+            const id = formData.get('id');
+            const response = await fetch(API_ENDPOINT + `events/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            const result = await response.json();
+ 
+            if (result.error)
+                // @ts-ignore
+                return fail(400, 'Invalid or expired token')
+            return { success: true, data: result };
+        } catch (error) {
+            return fail(500, { success: false, error });
+        }
+    },
+    deleteSocialMedia: async ({ request, cookies, fetch }) => {
+        try {
+            const formData = await request.formData();
+            let token = cookies.get('token');
+
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+
+            if (!token) {
+                return { success: false, error: 'Unauthroized: no token found'};
+            }
+
+            const id = formData.get('id');
+            const response = await fetch(API_ENDPOINT + `social_media/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            const result = await response.json();
+ 
+            if (result.error)
+                // @ts-ignore
+                return fail(400, 'Invalid or expired token')
+            return { success: true, data: result };
+        } catch (error) {
+            return fail(500, { success: false, error });
+        }
+    },
     saveAboutSection: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
@@ -158,6 +243,88 @@ export const actions: Actions = {
             }
 
             const response = await fetch(API_ENDPOINT + 'blog_posts', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            const result = await response.json();
+
+            if (result.error)
+                // @ts-ignore
+                return fail(400, 'Invalid or expired token')
+            return { success: true, data: result };
+        } catch (error) {
+            return fail(500, { success: false, error });
+        }
+    },
+    saveContact: async ({ request, cookies, fetch }) => {
+        try {
+            const formData = await request.formData();
+            let token = cookies.get('token');
+
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+
+            if (!token) {
+                return { success: false, error: 'Unauthroized: no token found'};
+            }
+
+            const response = await fetch(API_ENDPOINT + 'contacts', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            const result = await response.json();
+
+            if (result.error)
+                // @ts-ignore
+                return fail(400, 'Invalid or expired token')
+            return { success: true, data: result };
+        } catch (error) {
+            return fail(500, { success: false, error });
+        }
+    },
+    saveEvent: async ({ request, cookies, fetch }) => {
+        try {
+            const formData = await request.formData();
+            let token = cookies.get('token');
+
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+
+            if (!token) {
+                return { success: false, error: 'Unauthroized: no token found'};
+            }
+            const response = await fetch(API_ENDPOINT + 'events', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            const result = await response.json();
+            if (result.error)
+                // @ts-ignore
+                return fail(400, 'Invalid or expired token')
+            return { success: true, data: result };
+        } catch (error) {
+            return fail(500, { success: false, error });
+        }
+    },
+    saveSocialMedia: async ({ request, cookies, fetch }) => {
+        try {
+            const formData = await request.formData();
+            let token = cookies.get('token');
+
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+
+            if (!token) {
+                return { success: false, error: 'Unauthroized: no token found'};
+            }
+
+            const response = await fetch(API_ENDPOINT + 'social_media', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -259,6 +426,106 @@ export const actions: Actions = {
             return fail(500, { success: false, error });
         }
     },
+    updateContact: async ({ request, cookies, fetch }) => {
+        try {
+            const formData = await request.formData();
+            let token = cookies.get('token');
+
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+
+            if (!token) {
+                return { success: false, error: 'Unauthroized: no token found'};
+            }
+
+            const id = formData.get('id');
+            const response = await fetch(API_ENDPOINT + `contacts/${id}`, {
+                method: 'PUT',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            const result = await response.json();
+            if (result.error)
+                // @ts-ignore
+                return fail(400, 'Invalid or expired token')
+            return { success: true, data: result };
+        } catch (error) {
+            return fail(500, { success: false, error });
+        }
+    },
+    updateEvent: async ({ request, cookies, fetch }) => {
+        try {
+            const formData = await request.formData();
+            let token = cookies.get('token');
+
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+
+            if (!token) {
+                return { success: false, error: 'Unauthroized: no token found'};
+            }
+            const id = formData.get('id');
+            const response = await fetch(API_ENDPOINT + `events/${id}`, {
+                method: 'PUT',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            const result = await response.json();
+            if (result.error)
+                // @ts-ignore
+                return fail(400, 'Invalid or expired token')
+            return { success: true, data: result };
+        } catch (error) {
+            return fail(500, { success: false, error });
+        }
+    },
+    updateSocialMedia: async ({ request, cookies, fetch }) => {
+        try {
+            const formData = await request.formData();
+            let token = cookies.get('token');
+
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+
+            if (!token) {
+                return { success: false, error: 'Unauthroized: no token found'};
+            }
+
+            const id = formData.get('id');
+            const response = await fetch(API_ENDPOINT + `social_media/${id}`, {
+                method: 'PUT',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            const result = await response.json();
+            if (result.error)
+                // @ts-ignore
+                return fail(400, 'Invalid or expired token')
+            return { success: true, data: result };
+        } catch (error) {
+            return fail(500, { success: false, error });
+        }
+    },
+    uploadImage: async ({ request }) => {
+        try {
+            const formData = await request.formData();
+            const file = formData.get('image');
+            console.log({file})
+            if (!(file instanceof Object) || !file.name) {
+                return fail(400, { missing: true });
+            }
+
+            const buffer = Buffer.from(await file.arrayBuffer());
+
+            writeFileSync(`static/${file.name}`, buffer, "base64");
+            return { success: true, data: file.name };
+        } catch(error) {
+            return fail(500, { success: false, error })
+        }
+    }
 };
 
 export const load: ServerLoad = async ({ fetch }): Promise<PageData> => {
