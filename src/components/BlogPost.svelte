@@ -32,7 +32,6 @@
     }
 </script>
 <div class={`flex-none ${isFirst ? "w-full" : "w-96 2xl:w-md"}`}>
-
     {#if !isFirst}
         <div class="card shadow-sm">
             <figure>

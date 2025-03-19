@@ -41,7 +41,7 @@
         subtitle,
         title,
         images
-    })
+    });
 
     /**
      *  Upon mounting, the tiptap editor will be initialized,
