@@ -4,12 +4,18 @@
     import { onMount } from 'svelte';
 	import { toaster } from 'src/stores/toaster.store';
 
-    let { id, dates, link, location, name }: Event = $props();
+    let { id, dates, link, location, name, onDelete }: Event & { onDelete: Function } = $props();
     let modal: HTMLDialogElement;
     let cally;
     let calendar = $state(dates.join(" "));
     let calendarRef = $state<HTMLInputElement | null>(null);
     let inputRef = $state<HTMLInputElement | null>(null);
+    let postFormData = $state({
+        dates,
+        link,
+        location,
+        name
+    })
     let showCalendar = $state(false);
 
     // importing module on the client-side
@@ -50,20 +56,74 @@
     }
 
     /**
-     *  Creates a POST request body and send a query to save an 
-     *  event
+     *  Calls the DELETE API function to delete the event
+     *  based on its ID. This function is triggered at the 
+     *  confirmation of the dialog message. In case of success, 
+     *  a parent function 'onDelete' will be called to remove 
+     *  the element from the DOM.
      */
-    function saveEvent() {
+    async function deleteEvent() {
+        const eventFormData = new FormData();
+        eventFormData.append('id', id!.toString());
+
+        const response = await fetch('?/deleteEvent', {  
+            method: 'POST',
+            body: eventFormData
+        });
+        const responseData = await response.json();
+
+        if (responseData.status === 200) {
+            toaster.show('Event deleted', 'success');
+            onDelete(id);
+        }
+        else
+            toaster.show('Error: could not delete event', 'error');
+        modal.close();
+    }
+
+    /**
+     *  Creates a POST request body and send a query to save an 
+     *  event. Depending on the existence of an ID, the query 
+     *  will be either a POST or a PUT
+     */
+    async function saveEvent() {
+        const eventFormData = new FormData();
         const body: Event = {
+            id,
             dates: calendar.split(' '),
-            link,
-            location,
-            name
+            link: postFormData.link,
+            location: postFormData.location,
+            name: postFormData.name
         };
 
-        console.log(body);
-        toaster.show('Trying to save event', 'success');
+        Object.entries(body).forEach(([k, v]) => {
+            if (v)
+                eventFormData.append(k, v);
+        });
+
+        const response = !id ?
+                         await fetch('?/saveEvent', {
+                             method: 'POST',
+                             body: eventFormData
+                         }) :
+                         await fetch('?/updateEvent', {
+                             method: 'POST',
+                             body: eventFormData
+                         });
+
+        const responseData = await response.json();
+        switch(responseData.status) {
+            case 200:
+                toaster.show('Event successfully updated', 'success');
+                break;
+            case 201:
+                toaster.show('New event successfully created', 'success');
+                break;
+            default:
+                toaster.show('An error has occurred', 'error');
+        }
     }
+
     /** 
      *  Checks if the dialog HTML element is mounted, and if so, 
      *  calls the showModal function
@@ -78,13 +138,13 @@
 <fieldset class={`fieldset w-full bg-base-200 border border-base-300 mb-4 p-4 rounded-box`}>
     <div class="flex flex-row flex-wrap gap-x-4 gap-y-8 w-full">
         <label for="name" class="input text-xl w-[20.28vw]">
-            <input type="input" class="input input-lg" value={name} placeholder="Título" />
+            <input type="input" class="input input-lg" bind:value={postFormData.name} placeholder="Título" />
         </label>
         <label for="location" class="input text-xl w-[30vw]">
-            <input type="input" class="input input-lg" value={location} placeholder="Local" />
+            <input type="input" class="input input-lg" bind:value={postFormData.location} placeholder="Local" />
         </label>
         <label for="link" class="input text-xl w-[28.66vw]">
-            <input type="input" class="input input-lg" value={link} placeholder="Link" />
+            <input type="input" class="input input-lg" bind:value={postFormData.link} placeholder="Link" />
         </label>
         <label for="date" class="input text-xl w-full">
             <input type="input"
@@ -141,7 +201,8 @@
         <p class="py-4">Você tem certeza que quer continuar?</p>
         <div class="modal-action">
             <form class="flex gap-x-4" method="dialog">
-                <button class="btn btn-error text-white">Sim</button>
+                <button class="btn btn-error text-white"
+                        onclick={deleteEvent}>Sim</button>
                 <button class="btn btn-secondary text-white">Não</button>
             </form>
         </div>
