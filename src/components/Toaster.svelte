@@ -9,3 +9,13 @@
         </div>
     </div>
 {/if}
+
+<style>
+.alert-success {
+    background: var(--color-success); 
+}
+
+.alert-error {
+    background: var(--color-error);
+}
+</style>
