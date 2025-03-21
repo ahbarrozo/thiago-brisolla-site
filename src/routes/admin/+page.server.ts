@@ -1,5 +1,5 @@
 import { writeFileSync } from 'fs';
-import { fail, type Actions, type ServerLoad } from '@sveltejs/kit';
+import { fail, redirect, type Actions, type ServerLoad } from '@sveltejs/kit';
 import type { ApiData, PageData } from 'src/types/PageData.types';
 
 import { API_ENDPOINT } from '$env/static/private';
@@ -10,12 +10,10 @@ export const actions: Actions = {
     deleteAboutSection: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIyMTA4MTcsImV4cCI6MTc0MjI5NzIxN30.XdruXV-y2gpIfsKrz97HoMq5Czpe1kLkCAUhTDra2go";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const id = formData.get('id');
@@ -27,7 +25,7 @@ export const actions: Actions = {
             });
             const result = await response.json();
 
-            if (result.error)
+        if (result.error)
                 // @ts-ignore
                 return fail(400, 'Invalid or expired token')
             return { success: true, data: result };
@@ -38,12 +36,10 @@ export const actions: Actions = {
     deleteAlbum: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const id = formData.get('id');
@@ -66,12 +62,10 @@ export const actions: Actions = {
     deleteBlogPost: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIyMTA4MTcsImV4cCI6MTc0MjI5NzIxN30.XdruXV-y2gpIfsKrz97HoMq5Czpe1kLkCAUhTDra2go";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const id = formData.get('id');
@@ -94,11 +88,10 @@ export const actions: Actions = {
     deleteContact: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const id = formData.get('id');
@@ -121,13 +114,10 @@ export const actions: Actions = {
     deleteEvent: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
-
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const id = formData.get('id');
@@ -150,12 +140,10 @@ export const actions: Actions = {
     deleteSocialMedia: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const id = formData.get('id');
@@ -178,12 +166,10 @@ export const actions: Actions = {
     saveAboutSection: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIyMTA4MTcsImV4cCI6MTc0MjI5NzIxN30.XdruXV-y2gpIfsKrz97HoMq5Czpe1kLkCAUhTDra2go";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const response = await fetch(API_ENDPOINT + 'about_sections', {
@@ -206,12 +192,10 @@ export const actions: Actions = {
     saveAlbum: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const response = await fetch(API_ENDPOINT + 'albums', {
@@ -234,12 +218,10 @@ export const actions: Actions = {
     saveBlogPost: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIyMTA4MTcsImV4cCI6MTc0MjI5NzIxN30.XdruXV-y2gpIfsKrz97HoMq5Czpe1kLkCAUhTDra2go";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const response = await fetch(API_ENDPOINT + 'blog_posts', {
@@ -262,12 +244,10 @@ export const actions: Actions = {
     saveContact: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const response = await fetch(API_ENDPOINT + 'contacts', {
@@ -290,12 +270,10 @@ export const actions: Actions = {
     saveEvent: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
             const response = await fetch(API_ENDPOINT + 'events', {
                 method: 'POST',
@@ -316,12 +294,10 @@ export const actions: Actions = {
     saveSocialMedia: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const response = await fetch(API_ENDPOINT + 'social_media', {
@@ -344,12 +320,10 @@ export const actions: Actions = {
     updateAboutSection: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIyMTA4MTcsImV4cCI6MTc0MjI5NzIxN30.XdruXV-y2gpIfsKrz97HoMq5Czpe1kLkCAUhTDra2go";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const id = formData.get('id');
@@ -373,12 +347,10 @@ export const actions: Actions = {
     updateAlbum: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const id = formData.get('id');
@@ -401,12 +373,10 @@ export const actions: Actions = {
     updateBlogPost: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIyMTA4MTcsImV4cCI6MTc0MjI5NzIxN30.XdruXV-y2gpIfsKrz97HoMq5Czpe1kLkCAUhTDra2go";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const id = formData.get('id');
@@ -418,6 +388,7 @@ export const actions: Actions = {
                 }
             });
             const result = await response.json();
+            console.log(formData.get('images'))
             if (result.error)
                 // @ts-ignore
                 return fail(400, 'Invalid or expired token')
@@ -429,12 +400,10 @@ export const actions: Actions = {
     updateContact: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const id = formData.get('id');
@@ -457,12 +426,10 @@ export const actions: Actions = {
     updateEvent: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
             const id = formData.get('id');
             const response = await fetch(API_ENDPOINT + `events/${id}`, {
@@ -484,12 +451,10 @@ export const actions: Actions = {
     updateSocialMedia: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
-            let token = cookies.get('token');
-
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoaWFnb2JyaXNvbGxhNEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzMTQwMjgsImV4cCI6MTc0MjQwMDQyOH0.FdX2eenT61YORAPLjwh3Xyg-uPlUMkPEZQ-vEbhmpU4";
+            const token = cookies.get('token');
 
             if (!token) {
-                return { success: false, error: 'Unauthroized: no token found'};
+                return { success: false, error: 'Unauthorized: no token found'};
             }
 
             const id = formData.get('id');
@@ -513,22 +478,39 @@ export const actions: Actions = {
         try {
             const formData = await request.formData();
             const file = formData.get('image');
-            console.log({file})
             if (!(file instanceof Object) || !file.name) {
                 return fail(400, { missing: true });
             }
 
             const buffer = Buffer.from(await file.arrayBuffer());
 
-            writeFileSync(`static/${file.name}`, buffer, "base64");
+            writeFileSync(`static/images/${file.name}`, buffer, "base64");
             return { success: true, data: file.name };
         } catch(error) {
             return fail(500, { success: false, error })
         }
-    }
+    },
 };
 
-export const load: ServerLoad = async ({ fetch }): Promise<PageData> => {
+export const load: ServerLoad = async ({ cookies, fetch }): Promise<PageData> => {
+    const token = cookies.get('token');
+    if (!token) {
+        redirect(303, '/');
+    }
+
+    const formData = new FormData();
+    formData.append('token', token);
+    const response = await fetch(API_ENDPOINT + 'auth/verify_token',
+        {
+            method: 'POST',
+            body: formData 
+        }
+    );
+    const responseData = await response.json();
+
+    if (responseData.error)
+        redirect(303, '/');
+
     try {
         const dataTables: DataTableName[] = [
             'albums',
