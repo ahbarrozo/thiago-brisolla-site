@@ -1,7 +1,12 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
     import { LockSolid } from 'svelte-awesome-icons';
 
+    let { onAuthentication } = $props();
+
     function scrollToSection(sectionId: string) {
+        if (window.location.href.includes('admin')) 
+            goto('/');
         const element = document.getElementById(sectionId);
 
         if (element) {
@@ -21,31 +26,31 @@
             </div>
             <ul class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                 <li>
-                    <button on:click={() => scrollToSection("diario")} 
+                    <button onclick={() => scrollToSection("diario")} 
                             class="anchor font-questrial tracking-widest">
                         DIÁRIO
                     </button>
                 </li>
                 <li>
-                    <button on:click={() => scrollToSection("bio")} 
+                    <button onclick={() => scrollToSection("bio")} 
                             class="anchor font-questrial tracking-widest">
                         SOBRE
                     </button>
                 </li>
                 <li>
-                    <button on:click={() => scrollToSection("obra")}
+                    <button onclick={() => scrollToSection("obra")}
                             class="anchor font-questrial tracking-widest">
                         OBRA
                     </button>
                 </li>
                 <li>
-                    <button on:click={() => scrollToSection("agenda")}
+                    <button onclick={() => scrollToSection("agenda")}
                             class="anchor font-questrial tracking-widest">
                         AGENDA
                     </button>
                 </li>
                 <li>
-                    <button on:click={() => scrollToSection("contato")}
+                    <button onclick={() => scrollToSection("contato")}
                             class="anchor font-questrial tracking-widest">
                         CONTATO
                     </button>
@@ -58,19 +63,19 @@
     </div>        
 
     <div class="navbar-center hidden lg:flex lg:justify-center lg:gap-12">
-        <button on:click={() => scrollToSection("diario")} class="anchor font-questrial tracking-widest">DIÁRIO</button>
-        <button on:click={() => scrollToSection("bio")} class="anchor font-questrial tracking-widest">SOBRE</button>
-        <button on:click={() => scrollToSection("obra")} class="anchor font-questrial tracking-widest">OBRA</button>
-        <button on:click={() => scrollToSection("agenda")} class="anchor font-questrial tracking-widest">AGENDA</button>
-        <button on:click={() => scrollToSection("contato")} class="anchor font-questrial tracking-widest">CONTATO</button>
+        <button onclick={() => scrollToSection("diario")} class="anchor font-questrial tracking-widest">DIÁRIO</button>
+        <button onclick={() => scrollToSection("bio")} class="anchor font-questrial tracking-widest">SOBRE</button>
+        <button onclick={() => scrollToSection("obra")} class="anchor font-questrial tracking-widest">OBRA</button>
+        <button onclick={() => scrollToSection("agenda")} class="anchor font-questrial tracking-widest">AGENDA</button>
+        <button onclick={() => scrollToSection("contato")} class="anchor font-questrial tracking-widest">CONTATO</button>
     </div>
 
     <div class="navbar-end">
         <div class="flex items-center gap-4">
-            <a class="btn-icon variant-filled"
-               href="/admin">
+            <button class="btn-icon variant-filled"
+                    onclick={onAuthentication}>
                 <LockSolid size="14" />
-            </a>
+            </button>
         </div>
     </div>
 </div>
