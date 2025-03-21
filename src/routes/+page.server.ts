@@ -1,9 +1,56 @@
-import type { ServerLoad } from '@sveltejs/kit';
+import { fail, redirect, type Actions, type ServerLoad } from '@sveltejs/kit';
 import type { ApiData, PageData } from 'src/types/PageData.types';
 
 import { API_ENDPOINT } from '$env/static/private';
 
 type DataTableName = keyof ApiData;
+
+export const actions: Actions = {
+    authenticate: async ({ request, cookies, fetch }) => {
+        try {
+            const formData = await request.formData();
+            const response = await fetch(API_ENDPOINT + `auth/login`, {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+
+            if (result.error)
+                // @ts-ignore
+                return fail(400, 'Authentication failed');
+
+            cookies.set('token', result.token, { path: '/' });
+
+            return { success: true, data: result };
+        } catch (error) {
+            return fail(500, { success: false, error });
+        }
+    },
+    verifyToken: async ({ cookies, fetch }) => {
+        const token = cookies.get('token');
+        if (!token) {
+            cookies.delete('token', { path: '/' });
+            return { success: false };
+        }
+
+        const formData = new FormData();
+        formData.append('token', token);
+        const response = await fetch(API_ENDPOINT + 'auth/verify_token',
+            {
+                method: 'POST',
+                body: formData 
+            }
+        );
+        const responseData = await response.json();
+
+        if (responseData.error) {
+            cookies.delete('token', { path: '/' });
+            return { success: false };
+        }
+
+        redirect(303, '/admin');
+    }
+};
 
 export const load: ServerLoad = async ({ fetch }): Promise<PageData> => {
     try {
