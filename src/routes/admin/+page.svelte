@@ -14,7 +14,7 @@
     <div class="divider mt-0"></div>
     <h2 id="diario" class="text-4xl mb-8">ADMINISTRAÇÃO</h2>
     <div class="tabs tabs-lift">
-        <input type="radio" name="my_tabs_3" class="tab" aria-label="DIÁRIO" />
+        <input type="radio" name="my_tabs_3" class="tab" aria-label="DIÁRIO" checked />
         <div class="tab-content bg-base-100 border-base-300 p-6">
             <BlogAdmin blogPosts={apiData.blog_posts} />
         </div>
