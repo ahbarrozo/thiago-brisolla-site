@@ -26,14 +26,14 @@
         }
     }
 
-    function truncatedHTML(limit: number = 140) {
-        if (text.length <= 140) return text;
+    function truncatedHTML(limit: number = 150) {
+        if (text.length <= 150) return text;
         return text.slice(0, limit) + '...';
     }
 </script>
 <div class={`flex-none ${isFirst ? "w-full" : "w-96 2xl:w-md"}`}>
     {#if !isFirst}
-        <div class="card shadow-sm">
+        <div class="card shadow-sm h-150">
             <figure>
                 {#if images && images.length > 0}
                     <img src={images[0].path} 
@@ -62,14 +62,13 @@
                          class="object-cover object-top 
                                 h-96 w-5/10 overflow-hidden
                                 mr-10 rounded-lg" />
-                {/if}
-            
+                {/if} 
                 <div class="relative h-160 sm:h-96 w-80 sm:w-xl lg:w-2xl xl:w-3xl 2xl:w-5xl">
                     <div class="absolute top-0">
  	    	            <h1 class="!text-2xl !sm:text-5xl">{title}</h1>
 		    	        <span class="text-primary sm:text-2xl">{subtitle}</span>
-                        <div class="py-4 text-xl">
-                            {@html truncatedHTML(500)}
+                        <div class="py-4 text-xl truncate">
+                            {@html truncatedHTML(150)}
                         </div>
                     </div>
                     <div class="absolute bottom-0 card-actions w-full justify-between">
