@@ -11,7 +11,7 @@
         onUpdate
     }: Image & { onDelete: Function, onUpdate: Function }= $props();
 
-    let imageThumbnail = $state('');
+    let imageThumbnail = $state(path ?? '');
     let uploadedImage = $state();
 
     function handleFileChange(event: Event) {
