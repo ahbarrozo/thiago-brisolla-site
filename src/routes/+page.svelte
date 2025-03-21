@@ -13,13 +13,14 @@
 </script>
 
 <Cover cover={cover} />
-<main class="flex-1 px-4 md:px-12 2xl:px-36 bg-base-300">
+<main class="flex-1 px-4 md:px-12 2xl:px-36 bg-base-300 flow-root">
     <div class="divider mt-0"></div>
     <h2 id="diario" class="text-4xl">DIÁRIO</h2>
     <Blog blogPosts={apiData.blog_posts} />
     <div class="divider"></div>
     <h2 id="bio" class="text-4xl">QUEM SOU EU</h2>
     <About aboutSections={apiData.about_sections} />
+    <div class="clear-both"></div>
     <div class="divider"></div>
     <h2 id="obra" class="text-4xl">OBRA</h2>
     <Discography albums={apiData.albums} />
