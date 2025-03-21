@@ -6,6 +6,6 @@ export interface BlogPostProps {
   title: string;
   subtitle?: string;
   text: string;
-  images?: Image[];
+  images: Image[];
   isFirst?: boolean;
 }

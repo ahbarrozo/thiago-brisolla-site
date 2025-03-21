@@ -6,8 +6,10 @@
     import StarterKit from '@tiptap/starter-kit';
 
     import type { AboutSection } from 'src/types/About.types';
-	import { TrashSolid } from 'svelte-awesome-icons';
+	import { PlusSolid, TrashSolid } from 'svelte-awesome-icons';
 	import { toaster } from 'src/stores/toaster.store';
+	import ImageUploader from '../ImageUploader.svelte';
+	import type { Image } from 'src/types/Image.types';
 
     interface Button {
         active: () => boolean;
@@ -90,6 +92,18 @@
     });
 
     /**
+     *  Add an empty image to the submission form
+     */
+    function addImage() {
+        const emptyImage = {
+            title: '',
+            description: '',
+            path: ''
+        }
+        postForm.images.push(emptyImage);
+    }
+
+    /**
      *  Calls the DELETE API function to delete the section
      *  based on its ID. This function is triggered at the 
      *  confirmation of the dialog message. In case of success, 
@@ -115,6 +129,17 @@
         modal.close();
     }
 
+    /**
+     *  Function to be called upon an onDelete event from 
+     *  ImageUploader is triggered on the child component. 
+     *  It filters the sections by ID for deleted sections
+     *
+     *  @param index : number index of the deleted section
+     */
+    function deleteImage(index: number) {
+        postForm.images = postForm.images?.slice(0, index).concat(postForm.images?.slice(index + 1));
+    }
+    
     /**
      *  Calls the POST or PUT API request for about sections, depending 
      *  on the presence of an id prop.
@@ -169,6 +194,18 @@
             modal.showModal();
         }
     }
+ 
+    /**
+     *  Updates the list of images by updating the image at the 
+     *  index i of the array
+     *
+     *  @param i : number - index in the array of images
+     *  @param image : Image - image object to replace in index i
+     */
+    function updateImage(i: number, image: Image) {
+        if (postForm.images && postForm.images.length > i)
+            postForm.images[i] = { ...image };
+    }   
 </script>
 
 <h2 class="text-3xl m-4">Parte {num}</h2>
@@ -201,12 +238,22 @@
    
     <h3 class="text-3xl m-4">Imagem</h3>
      {#if postForm.images && postForm.images.length > 0}
-        {#each postForm.images as image}
-            <label for="images" class="input flex flex-col text-xl w-auto">
-                <p>{image.path}</p>
-            </label> 
+        {#each postForm.images as image, i}
+            <ImageUploader {...image} 
+                onDelete={() => deleteImage(i)}
+                onUpdate={(updatedImage: Image) => updateImage(i, updatedImage)} />
         {/each}
-    {/if} 
+    {/if}
+    {#if postForm.images && postForm.images.length === 0}
+        <div class="w-full">
+            <button class="btn btn-primary btn-outline mt-10"
+                    onclick={addImage}>
+                    <PlusSolid />
+                    Nova Imagem
+            </button>
+        </div>
+    {/if}
+
     <div class="flex justify-between">
         <button class="btn btn-primary mt-10"
                 onclick={saveAboutSection}>Salvar</button>

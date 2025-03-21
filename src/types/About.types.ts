@@ -2,7 +2,7 @@ import type { Image } from "./Image.types";
 
 export interface AboutSection {
     id?: number;
-    images?: Image[];
+    images: Image[];
     text: string;
 }
 

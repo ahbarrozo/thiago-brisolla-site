@@ -4,7 +4,7 @@ export interface Album {
     id?: number;
     date: string;
     description: string;
-    images?: Image[];
+    images: Image[];
     title: string;
 }
 

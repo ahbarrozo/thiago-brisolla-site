@@ -4,11 +4,13 @@
     import { createEditor } from 'svelte-tiptap';
     import { Editor } from '@tiptap/core';
     import StarterKit from '@tiptap/starter-kit';
-    import { TrashSolid } from 'svelte-awesome-icons';
+    import { PlusSolid, TrashSolid } from 'svelte-awesome-icons';
 
     import { toaster } from 'src/stores/toaster.store';
     import { type BlogPostProps } from 'src/types/BlogPost.types';
     import { PUBLIC_LOCALE } from '$env/static/public';
+	import ImageUploader from '../ImageUploader.svelte';
+	import type { Image } from 'src/types/Image.types';
 
     interface Button {
         active: () => boolean;
@@ -105,6 +107,15 @@
         ];
     });
 
+    function addImage() {
+        const emptyImage = {
+            title: '',
+            description: '',
+            path: ''
+        }
+        postForm.images.push(emptyImage);
+    }
+
     /**
      *  Calls the DELETE API function to delete the post
      *  based on its ID. This function is triggered at the 
@@ -117,7 +128,7 @@
         blogPostFormData.append('id', id!.toString());
 
         const response = await fetch('?/deleteBlogPost', {  
-            method: 'POST',
+    method: 'POST',
             body: blogPostFormData
         });
         const responseData = await response.json();
@@ -129,6 +140,17 @@
         else
             toaster.show('Error: could not delete post', 'error');
         modal.close();
+    }
+
+    /**
+     *  Function to be called upon an onDelete event from 
+     *  ImageUploader is triggered on the child component. 
+     *  It filters the sections by ID for deleted sections
+     *
+     *  @param index : number index of the deleted section
+     */
+    function deleteImage(index: number) {
+        postForm.images = postForm.images?.slice(0, index).concat(postForm.images?.slice(index + 1));
     }
 
     /**
@@ -188,6 +210,18 @@
             modal.showModal();
         }
     }
+
+    /**
+     *  Updates the list of images by updating the image at the 
+     *  index i of the array
+     *
+     *  @param i : number - index in the array of images
+     *  @param image : Image - image object to replace in index i
+     */
+    function updateImage(i: number, image: Image) {
+        if (postForm.images && postForm.images.length > i)
+            postForm.images[i] = { ...image };
+    }
 </script>
 
 <fieldset class={`fieldset ${isFirst ? "w-full" : "w-[3/10]"} bg-base-200 border border-base-300 p-4 rounded-box`}>
@@ -227,12 +261,19 @@
     </label>
     <h3 class="text-3xl m-4">Images</h3>
     {#if postForm.images && postForm.images.length > 0}
-        {#each postForm.images as image}
-            <label for="images" class="input flex flex-col text-xl w-auto">
-                <p>{image.path}</p>
-            </label> 
+        {#each postForm.images as image, i}
+            <ImageUploader {...image} 
+                onDelete={() => deleteImage(i)}
+                onUpdate={(updatedImage: Image) => updateImage(i, updatedImage)} />
         {/each}
     {/if}
+    <div class="w-full">
+        <button class="btn btn-primary btn-outline mt-10"
+                onclick={addImage}>
+                <PlusSolid />
+                Nova Imagem
+        </button>
+    </div>
     <div class="flex justify-between">
         <button class="btn btn-primary mt-10"
                 onclick={savePost}>Salvar</button>
