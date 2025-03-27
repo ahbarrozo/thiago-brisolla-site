@@ -1,0 +1,28 @@
+services:
+  # SvelteKit application
+  thiago-brisolla-site:
+    build:
+      context: ./thiago-brisolla-site
+      dockerfile: Dockerfile
+    container_name: thiago-brisolla-site
+    ports:
+      - "5173:5173"
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Hono with Bun application
+  thiago-brisolla-site-api:
+    build:
+      context: ./thiago-brisolla-site-api
+      dockerfile: Dockerfile
+    container_name: thiago-brisolla-site-api
+    ports:
+      - "3000:3000" 
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
