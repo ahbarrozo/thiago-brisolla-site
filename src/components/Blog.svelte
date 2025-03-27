@@ -9,8 +9,11 @@
     const POSTS_PER_PAGE = 6;
 
     const { blogPosts }: BlogProps = $props();
-    blogPosts[0].isFirst = true;
-    const newestPost = blogPosts[0];
+
+    if (blogPosts.length > 0)
+        blogPosts[0].isFirst = true;
+
+    const newestPost = blogPosts.length > 0 ? blogPosts[0] : null;
 
     let currentPage = $state(1);
     let firstPost = $derived((currentPage - 1) * POSTS_PER_PAGE + 1);
@@ -20,7 +23,9 @@
 
 </script>
 <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-10">
-    <BlogPost {...newestPost}></BlogPost> 
+    {#if newestPost}
+        <BlogPost {...newestPost}></BlogPost>
+    {/if}
     {#each displayedPosts as post}
         {#if !post.isFirst}
             <BlogPost {...post}></BlogPost> 
