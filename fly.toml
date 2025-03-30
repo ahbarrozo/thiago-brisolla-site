@@ -1,0 +1,40 @@
+# fly.toml app configuration file generated for thiago-brisolla on 2025-03-28T16:12:54+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'thiago-brisolla'
+primary_region = 'cdg'
+
+[build]
+
+[http_service]
+  internal_port = 5173
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 3000  # API port
+  
+  [[services.ports]]
+    port = 8000  # External port for API
+    handlers = ["tls", "http"]
+
+[scale]
+  count = 1
+  cpus = 1
+  memory = '1gb'
+
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+  [vm.mounts]
+    source = "thiago_brisolla"
+    destination = "/apps/site/static"

@@ -1,0 +1,44 @@
+FROM oven/bun:latest AS api-build
+WORKDIR /app/api
+COPY thiago-brisolla-site-api/package.json thiago-brisolla-site-api/bun.lock thiago-brisolla-site-api/.env ./
+RUN bun install
+COPY thiago-brisolla-site-api/. .
+RUN bun build src/index.ts --outdir dist --target bun
+
+FROM node:22.12.0-alpine AS site-build
+WORKDIR /app/site
+COPY thiago-brisolla-site/.env thiago-brisolla-site/package.json thiago-brisolla-site/package-lock.json ./
+RUN npm ci
+COPY thiago-brisolla-site/. .
+RUN npm run build
+RUN npm prune --production
+
+# Final combined image
+FROM node:22.12.0-alpine
+WORKDIR /apps
+
+# Install Bun
+RUN apk add --no-cache curl unzip bash
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:${PATH}"
+RUN bun --version
+
+# Install PM2
+RUN npm install -g pm2
+
+# Copy the API (bun app)
+COPY --from=api-build /app/api/dist /apps/api/dist
+COPY --from=api-build /app/api/.env /apps/api/
+
+# Copy the Site (node app)
+COPY --from=site-build /app/site /apps/site
+COPY --from=site-build /app/site/.env /apps/site
+
+# Create PM2 config file
+COPY ecosystem.config.js .
+
+# Expose ports for both applications
+EXPOSE 3000 5173
+
+# Start both services with PM2
+CMD ["pm2-runtime", "ecosystem.config.js"]
