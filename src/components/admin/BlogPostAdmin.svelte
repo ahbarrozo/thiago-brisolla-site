@@ -158,13 +158,30 @@
      *  on the 'isFirst' props.
      */
     async function savePost() {
+
+        if (!postForm.title || postForm.title.length === 0) {
+            toaster.show('Favor inserir un título.', 'error')
+            return;
+        }
+
+        if (!postForm.subtitle || postForm.subtitle.length === 0) {
+            toaster.show('Favor inserir un subtítulo.', 'error')
+            return;
+        }
+
+        if (!text || text.length === 0) {
+            toaster.show('Favor inserir un texto.', 'error')
+            return;
+        }
+
         const blogPostFormData = new FormData();
         const body: BlogPostProps = {
             id,
             date: date ?? (new Date()).toISOString(),
             text,
             title: postForm.title,
-            subtitle: postForm.subtitle
+            subtitle: postForm.subtitle,
+            images: []
         };
 
         Object.entries(body).forEach(([k, v]) => {
@@ -176,7 +193,7 @@
          *  JSON stringify the array, to prevent issues with 
          *  formData converting empty arrays into empty strings
          */
-        blogPostFormData.append('images', JSON.stringify(postForm.images));
+        blogPostFormData.set('images', JSON.stringify(postForm.images));
     
         const response = isFirst ?
                          await fetch('?/saveBlogPost', {
@@ -191,13 +208,13 @@
         const responseData = await response.json();
         switch(responseData.status) {
             case 200:
-                toaster.show('Post successfully updated', 'success');
+                toaster.show('Texto salvo na base de dados', 'success');
                 break;
             case 201:
-                toaster.show('New post successfully created', 'success');
+                toaster.show('Novo texto criado na base de dados', 'success');
                 break;
             default:
-                toaster.show('An error has occurred', 'error');
+                toaster.show('Um erro ocorreu', 'error');
         }
     }
 
