@@ -46,7 +46,6 @@
                 body: formData
             });
 
-            const responseData = await response.json();
             if (response.ok) {
                 // call parent function to update image array
                 onUpdate({ title, path: parsePath(path), description }); 
