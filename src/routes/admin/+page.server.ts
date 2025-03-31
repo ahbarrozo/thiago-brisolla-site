@@ -25,7 +25,7 @@ export const actions: Actions = {
             });
             const result = await response.json();
 
-        if (result.error)
+            if (result.error)
                 // @ts-ignore
                 return fail(400, 'Invalid or expired token')
             return { success: true, data: result };
