@@ -73,11 +73,11 @@
         const responseData = await response.json();
 
         if (responseData.status === 200) {
-            toaster.show('Event deleted', 'success');
+            toaster.show('Evento removido com sucesso.', 'success');
             onDelete(id);
         }
         else
-            toaster.show('Error: could not delete event', 'error');
+            toaster.show('Erro ao remover evento ', 'error');
         modal.close();
     }
 
@@ -87,6 +87,23 @@
      *  will be either a POST or a PUT
      */
     async function saveEvent() {
+        // Validating submission
+         if (!postFormData.name || postFormData.name.length === 0) {
+            toaster.show('Favor inserir um nome.', 'error');
+            return;
+        }
+
+       if (!postFormData.location || postFormData.location.length === 0) {
+            toaster.show('Favor inserir um local.', 'error');
+            return;
+        }
+
+        if (!postFormData.dates || postFormData.dates.length === 0) {
+            toaster.show('Favor incluir ao menos uma data.', 'error');
+            return;
+        }
+
+
         const eventFormData = new FormData();
         const body: Event = {
             id,

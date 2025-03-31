@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { isEmpty } from 'src/common/dataParsing';
 	import { toaster } from 'src/stores/toaster.store';
 	import type { Contact } from 'src/types/Contact.types';
 	import { TrashSolid } from 'svelte-awesome-icons';
@@ -39,7 +40,7 @@
 
         if (responseData.status === 200) {
             toaster.show('Event deleted', 'success');
-            onDelete(id);
+            onDelete();
         }
         else
             toaster.show('Error: could not delete event', 'error');
@@ -48,6 +49,22 @@
 
     // Creates a POST request body to save a new contact
     async function saveContact() {
+        // Form validation
+        if (isEmpty(postFormData.contact)) {
+            toaster.show('Favor inserir um responsável.', 'error');
+            return;
+        } 
+
+        if (isEmpty(postFormData.name)) {
+            toaster.show('Favor inserir um título.', 'error');
+            return;
+        } 
+
+        if (isEmpty(postFormData.mail)) {
+            toaster.show('Favor inserir um e-mail.', 'error');
+            return;
+        } 
+
         const contactFormData = new FormData();
         const body: Contact = {
             id,

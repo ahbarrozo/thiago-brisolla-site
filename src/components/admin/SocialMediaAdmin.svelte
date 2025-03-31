@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { isEmpty } from 'src/common/dataParsing';
 	import { toaster } from 'src/stores/toaster.store';
 	import type { SocialMedia } from 'src/types/SocialMedia.types';
 	import { TrashSolid } from 'svelte-awesome-icons';
@@ -56,6 +57,17 @@
 
     // Creates a POST request body to save a new social meida
     async function saveSocialMedia() {
+        // Form validation
+        if (isEmpty(postFormData.link)) {
+            toaster.show('Favor inserir um link.', 'error');
+            return;
+        }
+
+        if (isEmpty(postFormData.name)) {
+            toaster.show('Favor inserir um nome.', 'error');
+            return;
+        }
+
         const socialMediaFormData = new FormData();
         const body: SocialMedia = {
             id,

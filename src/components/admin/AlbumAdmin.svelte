@@ -186,12 +186,24 @@
      *  on the presence of an id prop.
      */
     async function saveAlbum() {
+        // Form validation
+         if (!postForm.title || postForm.title.length === 0) {
+            toaster.show('Favor inserir um título.', 'error');
+            return;
+        }
+
+       if (!calendar || calendar.length === 0) {
+            toaster.show('Favor escolher uma data.', 'error');
+            return;
+        }
+
         const albumFormData = new FormData();
         const body: Album = {
             id,  // include only if it exists
             date: calendar,
             description,
-            title: postForm.title
+            title: postForm.title,
+            images: []
         };
 
         Object.entries(body).forEach(([k, v]) => {
@@ -203,7 +215,7 @@
          *  JSON stringify the array, to prevent issues with 
          *  formData converting empty arrays into empty strings
          */
-        albumFormData.append('images', JSON.stringify(postForm.images));
+        albumFormData.set('images', JSON.stringify(postForm.images));
 
         const response = !id ?
                          await fetch('?/saveAlbum', {
@@ -218,10 +230,10 @@
         const responseData = await response.json();
         switch(responseData.status) {
             case 200:
-                toaster.show('Album successfully updated', 'success');
+                toaster.show('Album atualizado com sucesso.', 'success');
                 break;
             case 201:
-                toaster.show('New album successfully created', 'success');
+                toaster.show('Novo album criado com sucesso.', 'success');
                 break;
             default:
                 toaster.show('An error has occurred', 'error');
