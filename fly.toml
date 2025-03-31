@@ -8,6 +8,19 @@ primary_region = 'cdg'
 
 [build]
 
+[mounts]
+  source = "thiago_brisolla"
+  destination = "/apps/site/build/client/images"
+
+[http_service.concurrency]
+  type = "connections"
+  hard_limit = 25
+  soft_limit = 20
+
+[[statics]]
+  guest_path = "/apps/site/build/client/images"
+  url_prefix = "/"
+
 [http_service]
   internal_port = 5173
   force_https = true
