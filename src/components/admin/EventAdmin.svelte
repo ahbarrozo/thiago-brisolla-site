@@ -3,6 +3,7 @@
 	import { TrashSolid } from 'svelte-awesome-icons';
     import { onMount } from 'svelte';
 	import { toaster } from 'src/stores/toaster.store';
+	import { isEmpty } from 'src/common/dataParsing';
 
     let { id, dates, link, location, name, onDelete }: Event & { onDelete: Function } = $props();
     let modal: HTMLDialogElement;
@@ -88,17 +89,17 @@
      */
     async function saveEvent() {
         // Validating submission
-         if (!postFormData.name || postFormData.name.length === 0) {
+         if (isEmpty(postFormData.name)) {
             toaster.show('Favor inserir um nome.', 'error');
             return;
         }
 
-       if (!postFormData.location || postFormData.location.length === 0) {
+       if (isEmpty(postFormData.location)) {
             toaster.show('Favor inserir um local.', 'error');
             return;
         }
 
-        if (!postFormData.dates || postFormData.dates.length === 0) {
+        if (isEmpty(calendar)) {
             toaster.show('Favor incluir ao menos uma data.', 'error');
             return;
         }
@@ -107,7 +108,7 @@
         const eventFormData = new FormData();
         const body: Event = {
             id,
-            dates: calendar.split(' '),
+            dates: calendar,
             link: postFormData.link,
             location: postFormData.location,
             name: postFormData.name
