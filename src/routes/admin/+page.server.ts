@@ -388,7 +388,6 @@ export const actions: Actions = {
                 }
             });
             const result = await response.json();
-            console.log(formData.get('images'))
             if (result.error)
                 // @ts-ignore
                 return fail(400, 'Invalid or expired token')
@@ -483,8 +482,10 @@ export const actions: Actions = {
             }
 
             const buffer = Buffer.from(await file.arrayBuffer());
-
-            writeFileSync(`static/images/${file.name}`, buffer, "base64");
+            const uploadPath = process.env.NODE_ENV === 'production' ? 
+                               '/apps/site/build/client/images/images' : 
+                               'static/images'
+            writeFileSync(`${uploadPath}/${file.name}`, buffer, "base64");
             return { success: true, data: file.name };
         } catch(error) {
             return fail(500, { success: false, error })
