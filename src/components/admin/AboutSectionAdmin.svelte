@@ -145,6 +145,12 @@
      *  on the presence of an id prop.
      */
     async function saveAboutSection() {
+        // Validating before allowing submission
+        if (!text || text.length === 0) {
+            toaster.show('Favor inserir texto', 'error');
+            return;
+        }
+
         const aboutSectionFormData = new FormData();
         const body = {
             id: id && id.toString(),  // include only if it exists
