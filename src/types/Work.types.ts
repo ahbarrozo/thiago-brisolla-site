@@ -5,6 +5,7 @@ export interface Work {
     date: string;
     description: string;
     images: Image[];
+    link?: string;
     title: string;
 }
 
