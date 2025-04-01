@@ -5,7 +5,7 @@
     import { Editor } from '@tiptap/core';
     import StarterKit from '@tiptap/starter-kit';
 
-    import { type Album } from 'src/types/Album.types';
+    import { type Work } from 'src/types/Work.types';
 	import { PlusSolid, TrashSolid } from 'svelte-awesome-icons';
 	import { toaster } from 'src/stores/toaster.store';
 	import ImageUploader from '../ImageUploader.svelte';
@@ -27,7 +27,7 @@
         title,
         isNew,
         onDelete
-    }: Album & { isNew?: boolean, onDelete: Function } = $props();
+    }: Work & { isNew?: boolean, onDelete: Function } = $props();
 
     let cally;
     let calendar = $state(date);
@@ -145,28 +145,28 @@
     }
 
     /**
-     *  Calls the DELETE API function to delete the album
+     *  Calls the DELETE API function to delete the work
      *  based on its ID. This function is triggered at the 
      *  confirmation of the dialog message. In case of success, 
      *  a parent function 'onDelete' will be called to remove 
      *  the element from the DOM.
      */
-    async function deleteAlbum() {
-        const albumFormData = new FormData();
-        albumFormData.append('id', id!.toString());
+    async function deleteWork() {
+        const workFormData = new FormData();
+        workFormData.append('id', id!.toString());
 
         const response = await fetch('?/deleteAlbum', {  
             method: 'POST',
-            body: albumFormData
+            body: workFormData
         });
         const responseData = await response.json();
 
         if (responseData.status === 200) {
-            toaster.show('Album deleted', 'success');
+            toaster.show('Obra removida', 'success');
             onDelete(id);
         }
         else
-            toaster.show('Error: could not delete album', 'error');
+            toaster.show('Erro: problema para remover obra da base de dados', 'error');
         modal.close();
     }
 
@@ -182,10 +182,10 @@
     }
 
     /**
-     *  Calls the POST or PUT API request for albums, depending 
+     *  Calls the POST or PUT API request for works, depending 
      *  on the presence of an id prop.
      */
-    async function saveAlbum() {
+    async function saveWork() {
         // Form validation
          if (!postForm.title || postForm.title.length === 0) {
             toaster.show('Favor inserir um título.', 'error');
@@ -197,8 +197,8 @@
             return;
         }
 
-        const albumFormData = new FormData();
-        const body: Album = {
+        const workFormData = new FormData();
+        const body: Work = {
             id,  // include only if it exists
             date: calendar,
             description,
@@ -208,35 +208,35 @@
 
         Object.entries(body).forEach(([k, v]) => {
             if (v)
-                albumFormData.append(k, v);
+                workFormData.append(k, v);
         });     
 
         /**
          *  JSON stringify the array, to prevent issues with 
          *  formData converting empty arrays into empty strings
          */
-        albumFormData.set('images', JSON.stringify(postForm.images));
+        workFormData.set('images', JSON.stringify(postForm.images));
 
         const response = !id ?
                          await fetch('?/saveAlbum', {
                              method: 'POST',
-                             body: albumFormData
+                             body: workFormData
                          }) :
                          await fetch('?/updateAlbum', {
                              method: 'POST',
-                             body: albumFormData
+                             body: workFormData
                          });
 
         const responseData = await response.json();
         switch(responseData.status) {
             case 200:
-                toaster.show('Album atualizado com sucesso.', 'success');
+                toaster.show('Obra atualizada com sucesso.', 'success');
                 break;
             case 201:
-                toaster.show('Novo album criado com sucesso.', 'success');
+                toaster.show('Nova obra criada com sucesso.', 'success');
                 break;
             default:
-                toaster.show('An error has occurred', 'error');
+                toaster.show('Erro: problema ao guardar obra na base de dados.', 'error');
         }
     }
 
@@ -353,7 +353,7 @@
 
     <div class="flex justify-between">
         <button class="btn btn-primary mt-10"
-                onclick={saveAlbum}>Salvar</button>
+                onclick={saveWork}>Salvar</button>
         {#if !isNew}
             <button class="btn btn-error text-white mt-10"
                     onclick={showModal}>
@@ -370,7 +370,7 @@
     <div class="modal-action">
       <form class="flex gap-x-4" method="dialog">
         <button class="btn btn-error text-white"
-                onclick={deleteAlbum}>Sim</button>
+                onclick={deleteWork}>Sim</button>
         <button class="btn btn-secondary text-white">Não</button>
       </form>
     </div>

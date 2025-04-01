@@ -4,8 +4,8 @@
     import Contact from "src/components/Contact.svelte";
     import Cover from "src/components/Cover.svelte";
     import Blog from "src/components/Blog.svelte";  
-	import Discography from "src/components/Discography.svelte";
     import Events from "src/components/Events.svelte";
+    import Works from "src/components/Works.svelte";
     import { type PageData } from "src/types/PageData.types"
 
     const { data } = $props<{ data: PageData }>();
@@ -23,7 +23,7 @@
     <div class="clear-both"></div>
     <div class="divider"></div>
     <h2 id="obra" class="text-4xl">OBRA</h2>
-    <Discography albums={apiData.albums} />
+    <Works works={apiData.albums} />
     <div class="divider"></div>
     <h2 id="agenda" class="text-4xl">AGENDA</h2>
     <Events events={apiData.events} /> 

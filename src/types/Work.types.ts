@@ -1,6 +1,6 @@
 import type { Image } from "./Image.types";
 
-export interface Album {
+export interface Work {
     id?: number;
     date: string;
     description: string;
@@ -8,6 +8,6 @@ export interface Album {
     title: string;
 }
 
-export interface DiscographyProps {
-    albums: Album[];
+export interface WorksProps {
+    works: Work[];
 }
