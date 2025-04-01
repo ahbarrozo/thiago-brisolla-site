@@ -4,7 +4,10 @@
     import {
         FacebookBrands,
         InstagramBrands,
-        SpotifyBrands
+        SpotifyBrands,
+
+		YoutubeBrands
+
     } from "svelte-awesome-icons";
 
     function getIcon(name: string) {
@@ -15,6 +18,8 @@
                 return InstagramBrands;
             case "spotify":
                 return SpotifyBrands;
+            case "youtube":
+                return YoutubeBrands;
         }
     }
 

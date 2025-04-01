@@ -26,7 +26,14 @@
             displayName: 'Instagram',
             name: 'instagram',
         },
-
+        {
+            displayName: 'Spotify',
+            name: 'spotify',
+        },
+        {
+            displayName: 'YouTube',
+            name: 'youtube',
+        },
     ]
 
     /**
