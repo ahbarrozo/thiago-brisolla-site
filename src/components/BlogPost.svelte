@@ -65,7 +65,7 @@
                 {/if} 
                 <div class="relative h-160 sm:h-96 w-80 sm:w-xl lg:w-2xl xl:w-3xl 2xl:w-5xl">
                     <div class="absolute top-0">
- 	    	            <h1 class="!text-2xl !sm:text-5xl">{title}</h1>
+ 	    	            <h1 class="text-2xl sm:text-5xl">{title}</h1>
 		    	        <span class="text-primary sm:text-2xl">{subtitle}</span>
                         <div class="py-4 text-xl truncate">
                             {@html truncatedHTML(150)}
