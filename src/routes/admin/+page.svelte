@@ -24,7 +24,7 @@
         </div>
         <input type="radio" name="my_tabs_3" class="tab" aria-label="OBRA" />
         <div class="tab-content bg-base-100 border-base-300 p-6">
-            <WorksAdmin works={apiData.albums} />
+            <WorksAdmin works={apiData.works} />
         </div>
         <input type="radio" name="my_tabs_3" class="tab" aria-label="AGENDA" />
         <div class="tab-content bg-base-100 border-base-300 p-6">

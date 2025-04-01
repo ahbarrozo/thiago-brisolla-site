@@ -155,7 +155,7 @@
         const workFormData = new FormData();
         workFormData.append('id', id!.toString());
 
-        const response = await fetch('?/deleteAlbum', {  
+        const response = await fetch('?/deleteWork', {  
             method: 'POST',
             body: workFormData
         });
@@ -218,11 +218,11 @@
         workFormData.set('images', JSON.stringify(postForm.images));
 
         const response = !id ?
-                         await fetch('?/saveAlbum', {
+                         await fetch('?/saveWork', {
                              method: 'POST',
                              body: workFormData
                          }) :
-                         await fetch('?/updateAlbum', {
+                         await fetch('?/updateWork', {
                              method: 'POST',
                              body: workFormData
                          });

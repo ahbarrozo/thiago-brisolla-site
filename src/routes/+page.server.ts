@@ -55,12 +55,12 @@ export const actions: Actions = {
 export const load: ServerLoad = async ({ fetch }): Promise<PageData> => {
     try {
         const dataTables: DataTableName[] = [
-            'albums',
             'about_sections', 
             'blog_posts', 
             'contacts', 
             'events', 
-            'social_media'
+            'social_media',
+            'works'
         ];
 
         // Create an array of promise-returning API call functions

@@ -23,7 +23,7 @@
     <div class="clear-both"></div>
     <div class="divider"></div>
     <h2 id="obra" class="text-4xl">OBRA</h2>
-    <Works works={apiData.albums} />
+    <Works works={apiData.works} />
     <div class="divider"></div>
     <h2 id="agenda" class="text-4xl">AGENDA</h2>
     <Events events={apiData.events} /> 

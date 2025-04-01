@@ -33,7 +33,7 @@ export const actions: Actions = {
             return fail(500, { success: false, error });
         }
     },  
-    deleteAlbum: async ({ request, cookies, fetch }) => {
+    deleteWork: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
             const token = cookies.get('token');
@@ -43,7 +43,7 @@ export const actions: Actions = {
             }
 
             const id = formData.get('id');
-            const response = await fetch(API_ENDPOINT + `albums/${id}`, {
+            const response = await fetch(API_ENDPOINT + `works/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -189,7 +189,7 @@ export const actions: Actions = {
             return fail(500, { success: false, error });
         }
     },
-    saveAlbum: async ({ request, cookies, fetch }) => {
+    saveWork: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
             const token = cookies.get('token');
@@ -198,7 +198,7 @@ export const actions: Actions = {
                 return { success: false, error: 'Unauthorized: no token found'};
             }
 
-            const response = await fetch(API_ENDPOINT + 'albums', {
+            const response = await fetch(API_ENDPOINT + 'works', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -344,7 +344,7 @@ export const actions: Actions = {
             return fail(500, { success: false, error });
         }
     },
-    updateAlbum: async ({ request, cookies, fetch }) => {
+    updateWork: async ({ request, cookies, fetch }) => {
         try {
             const formData = await request.formData();
             const token = cookies.get('token');
@@ -354,7 +354,7 @@ export const actions: Actions = {
             }
 
             const id = formData.get('id');
-            const response = await fetch(API_ENDPOINT + `albums/${id}`, {
+            const response = await fetch(API_ENDPOINT + `works/${id}`, {
                 method: 'PUT',
                 body: formData,
                 headers: {
@@ -514,12 +514,12 @@ export const load: ServerLoad = async ({ cookies, fetch }): Promise<PageData> =>
 
     try {
         const dataTables: DataTableName[] = [
-            'albums',
             'about_sections', 
             'blog_posts', 
             'contacts', 
             'events', 
-            'social_media'
+            'social_media',
+            'works'
         ];
 
         // Create an array of promise-returning API call functions
