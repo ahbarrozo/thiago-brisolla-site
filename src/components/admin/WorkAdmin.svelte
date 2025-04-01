@@ -24,6 +24,7 @@
         date,
         description,
         images,
+        link,
         title,
         isNew,
         onDelete
@@ -41,6 +42,7 @@
         date,
         description,
         images,
+        link,
         title
     })
     let showCalendar = $state(false);
@@ -173,9 +175,9 @@
     /**
      *  Function to be called upon an onDelete event from 
      *  ImageUploader is triggered on the child component. 
-     *  It filters the sections by ID for deleted sections
+     *  It filters the works by ID for deleted works
      *
-     *  @param index : number index of the deleted section
+     *  @param index : number index of the deleted work
      */
     function deleteImage(index: number) {
         postForm.images = postForm.images?.slice(0, index).concat(postForm.images?.slice(index + 1));
@@ -202,6 +204,7 @@
             id,  // include only if it exists
             date: calendar,
             description,
+            link: postForm.link,
             title: postForm.title,
             images: []
         };
@@ -307,6 +310,9 @@
             {/if}
         </label>
     </div>
+    <label for="title" class="input text-xl w-full">
+        <input type="input" class="input input-lg" bind:value={postForm.link} placeholder="Link" />
+    </label>
     <label for="text" class="input text-xl w-auto flex flex-col gap-y-4 bg-base-300 overflow-y-scroll h-100">
         <div class="flex mt-4 gap-x-4">
         {#if editor}
